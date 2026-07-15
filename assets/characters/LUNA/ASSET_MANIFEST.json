@@ -1,72 +1,53 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "character": "LUNA-001",
   "generated": "2026-07-15",
   "status": "awaiting_photos",
 
-  "files": {
-    "pixel": {
-      "base": {
-        "idle":    { "path": "pixel/sprites/idle/idle.png",    "frames": 8,  "size": "128x128", "format": "PNG", "status": "missing" },
-        "sing":    { "path": "pixel/sprites/sing/sing.png",    "frames": 12, "size": "128x128", "format": "PNG", "status": "missing" },
-        "dance":   { "path": "pixel/sprites/dance/dance.png",  "frames": 16, "size": "128x128", "format": "PNG", "status": "missing" },
-        "happy":   { "path": "pixel/sprites/happy/happy.png",  "frames": 12, "size": "128x128", "format": "PNG", "status": "missing" },
-        "bow":     { "path": "pixel/sprites/bow/bow.png",      "frames": 8,  "size": "128x128", "format": "PNG", "status": "missing" }
-      },
-      "expressions": {
-        "neutral":   { "path": "pixel/expressions/neutral.png",   "size": "64x64", "status": "missing" },
-        "happy":     { "path": "pixel/expressions/happy.png",     "size": "64x64", "status": "missing" },
-        "shy":       { "path": "pixel/expressions/shy.png",       "size": "64x64", "status": "missing" },
-        "surprised": { "path": "pixel/expressions/surprised.png", "size": "64x64", "status": "missing" },
-        "singing":   { "path": "pixel/expressions/singing.png",   "size": "64x64", "status": "missing" },
-        "excited":   { "path": "pixel/expressions/excited.png",   "size": "64x64", "status": "missing" },
-        "sleepy":    { "path": "pixel/expressions/sleepy.png",    "size": "64x64", "status": "missing" }
-      },
-      "outfits": {
-        "graduation": { "path": "pixel/outfits/graduation.png", "size": "128x256", "status": "missing" },
-        "live":       { "path": "pixel/outfits/live.png",       "size": "128x256", "status": "missing" },
-        "ceo":        { "path": "pixel/outfits/ceo.png",        "size": "128x256", "status": "missing" }
-      }
+  "identity": { "sheet": "identity_sheet.md", "status": "ready" },
+
+  "assets": {
+    "layers": {
+      "body":         { "file": "layers/body/body.png", "status": "missing" },
+      "hair_front":    { "file": "layers/hair/hair_front.png", "status": "missing" },
+      "hair_back":     { "file": "layers/hair/hair_back.png", "status": "missing" },
+      "face":          { "file": "layers/face/face.png", "status": "missing" },
+      "eye_left":      { "file": "layers/eyes/eye_left.png", "status": "missing" },
+      "eye_right":     { "file": "layers/eyes/eye_right.png", "status": "missing" },
+      "mouth_close":   { "file": "layers/mouth/mouth_close.png", "status": "missing" },
+      "mouth_open":    { "file": "layers/mouth/mouth_open.png", "status": "missing" },
+      "mouth_smile":   { "file": "layers/mouth/mouth_smile.png", "status": "missing" },
+      "outfit_grad":   { "file": "layers/clothes/graduation/outfit.png", "status": "missing" },
+      "outfit_live":   { "file": "layers/clothes/live/outfit.png", "status": "missing" },
+      "outfit_ceo":    { "file": "layers/clothes/CEO/outfit.png", "status": "missing" },
+      "accessory_mic": { "file": "layers/accessory/mic.png", "status": "missing" },
+      "effect_star":   { "file": "layers/effect/star.png", "status": "missing" }
+    },
+    "pixel_sprites": {
+      "graduation_idle":  { "file": "pixel/sprites/idle/idle.png", "frames": 8,  "status": "missing" },
+      "graduation_sing":  { "file": "pixel/sprites/sing/sing.png", "frames": 20, "status": "missing" },
+      "graduation_dance": { "file": "pixel/sprites/dance/dance.png", "frames": 30, "status": "missing" }
     },
     "live2d": {
-      "model":       { "path": "live2d/LUNA.model3.json",   "status": "missing" },
-      "moc3":        { "path": "live2d/LUNA.moc3",          "status": "missing" },
-      "textures":    { "path": "live2d/textures/",          "count": 1, "status": "missing" },
-      "motions": {
-        "idle":      { "path": "live2d/motions/idle.motion3.json",    "status": "missing" },
-        "sing":      { "path": "live2d/motions/sing.motion3.json",    "status": "missing" },
-        "dance":     { "path": "live2d/motions/dance.motion3.json",   "status": "missing" },
-        "bow":       { "path": "live2d/motions/bow.motion3.json",     "status": "missing" }
-      },
-      "expressions": {
-        "happy":     { "path": "live2d/expressions/happy.exp3.json",   "status": "missing" },
-        "shy":       { "path": "live2d/expressions/shy.exp3.json",     "status": "missing" },
-        "singing":   { "path": "live2d/expressions/singing.exp3.json", "status": "missing" }
-      }
+      "model":  { "file": "live2d/LUNA.model3.json", "status": "missing" },
+      "moc3":   { "file": "live2d/LUNA.moc3", "status": "missing" }
     },
-    "backgrounds": {
-      "school":  { "path": "assets/backgrounds/school.png",  "size": "750x1334", "status": "missing" },
-      "live":    { "path": "assets/backgrounds/live.png",    "size": "750x1334", "status": "missing" },
-      "office":  { "path": "assets/backgrounds/office.png",  "size": "750x1334", "status": "missing" }
-    },
-    "effects": {
-      "star":       { "path": "assets/effects/star.png",       "size": "64x64",  "status": "missing" },
-      "pixel_frag": { "path": "assets/effects/pixel_frag.png", "size": "16x16",  "status": "missing" },
-      "sparkle":    { "path": "assets/effects/sparkle.png",    "size": "32x32",  "status": "missing" }
+    "configs": {
+      "identity_sheet":   { "file": "identity_sheet.md", "status": "ready" },
+      "character_json":   { "file": "character.json", "status": "ready" },
+      "live2d_mapping":   { "file": "live2d_mapping.json", "status": "ready" },
+      "character_bible":  { "file": "CHARACTER_BIBLE.md", "status": "ready" },
+      "asset_manifest":   { "file": "ASSET_MANIFEST.json", "status": "ready" }
     }
   },
 
   "totals": {
-    "pixel_sprites": 12,
-    "expressions": 7,
-    "outfits": 3,
-    "live2d_models": 1,
-    "live2d_motions": 4,
-    "live2d_expressions": 3,
-    "backgrounds": 3,
-    "effects": 3,
-    "total_assets": 36,
-    "ready": 0,
-    "missing": 36
+    "layers": 14,
+    "sprites": 18,
+    "live2d": 2,
+    "configs": 5,
+    "total": 39,
+    "ready": 5,
+    "missing": 34
   }
 }
