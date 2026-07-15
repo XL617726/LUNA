@@ -53,7 +53,7 @@ function startAnimLoop() {
     ctx.clearRect(0, 0, size, size)
     ctx.imageSmoothingEnabled = false
 
-    if (sprite?.image) {
+    if (sprite?.image && !sprite.isPlaceholder) {
       const frameSrc = loader.getFrameSource(sprite, currentFrame)
       ctx.drawImage(sprite.image, frameSrc.sx, frameSrc.sy, frameSrc.sw, frameSrc.sh, 0, 0, size, size)
     } else {
@@ -68,149 +68,174 @@ function drawPixelCharacter(
   ctx: CanvasRenderingContext2D, size: number,
   anim: string, form: string, frame: number, totalFrames: number
 ) {
-  const G = Math.floor(size / 16)
+  const G = Math.floor(size / 64) // 64x64 ultra-high-res pixel grid
   const P = (x: number, y: number, c: string) => { ctx.fillStyle = c; ctx.fillRect(x * G, y * G, G, G) }
-  const breathe = Math.sin(frame / totalFrames * Math.PI * 2) * 0.5
+  const PR = (x: number, y: number, w: number, h: number, c: string) => { ctx.fillStyle = c; ctx.fillRect(x * G, y * G, w * G, h * G) }
+  const breathe = Math.sin(frame / totalFrames * Math.PI * 2)
+  const S=G // alias for single pixel unit
 
-  // === 通用特征（三个形态共用） ===
-  const hairColor = '#5c3d2e'      // 棕色头发
-  const hairLight = '#7a5a4a'      // 发丝高光
-  const skinColor = '#ffd5b8'      // 肤色
-  const eyeDark = '#3a2010'        // 虹膜
+  // === Colors ===
+  const SK='#ffdbbc',SK2='#f0c4a0',SK3='#ffe8d0' // skin tones
+  const HR='#5c3826',HR2='#7a4f38',HR3='#91684a' // hair
+  const EY='#1a0a05',EY2='#4a3020' // eyes
+  const BL='rgba(255,150,150,0.35)' // blush
 
-  // 头发（棕色中长发+齐刘海）
-  for (let x = 2; x <= 12; x++) for (let y = 0; y <= 3; y++) if (x >= 3 && x <= 11) P(x, y, hairColor)
-  for (let y = 2; y <= 5; y++) { P(2, y, hairColor); P(12, y, hairColor) }
-  P(3, 1, hairLight); P(10, 1, hairLight)
+  // === Common: Hair (detailed) ===
+  PR(10,0,40,8,HR)      // hair base
+  PR(12,0,36,4,HR2)     // top highlight
+  PR(14,1,28,1,HR3)     // shine streak
+  PR(8,6,6,8,HR)        // left strands
+  PR(48,6,6,8,HR)       // right strands
+  PR(12,8,36,2,HR2)     // bangs
+  PR(14,10,32,1,HR)     // bangs shadow
 
-  // 脸部
-  for (let x = 4; x <= 10; x++) for (let y = 3; y <= 7; y++) P(x, y, skinColor)
+  // === Common: Face ===
+  PR(16,8,28,16,SK)     // face base
+  PR(18,6,24,2,SK3)     // forehead highlight
+  PR(28,10,8,1,SK2)     // nose bridge
+  PR(30,14,4,2,SK2)     // nose
+  PR(14,22,32,2,SK)     // chin
 
-  // 黑框眼镜（女主播和CEO共用）
-  if (form === 'live' || form === 'CEO') {
-    ctx.fillStyle = '#222'; ctx.fillRect(4 * G, 5 * G, G * 2, G); ctx.fillRect(8 * G, 5 * G, G * 2, G)
-    P(4, 5, '#fff'); P(5, 5, '#3a2010'); P(8, 5, '#fff'); P(9, 5, '#3a2010') // 眼睛在镜片后
-  } else {
-    // 眼睛
-    P(5, 5, eyeDark); P(9, 5, eyeDark); P(4, 5, '#fff'); P(8, 5, '#fff')
+  // === Common: Eyes ===
+  if(form==='live'||form==='CEO'){
+    PR(18,11,8,4,'#2a2a2a')  // left glass frame
+    PR(36,11,8,4,'#2a2a2a')  // right glass frame
+    PR(26,12,10,1,'#2a2a2a') // bridge
+  }
+  PR(20,13,6,2,'#fff')   // left eye white
+  PR(38,13,6,2,'#fff')   // right eye white
+  PR(21,13,4,2,EY2)      // left iris
+  PR(39,13,4,2,EY2)      // right iris
+  PR(22,13,2,2,EY)       // left pupil
+  PR(40,13,2,2,EY)       // right pupil
+  PR(22,12,1,1,'#fff')   // left sparkle
+  PR(40,12,1,1,'#fff')   // right sparkle
+
+  // === Common: Eyebrows, Blush, Mouth ===
+  PR(20,10,6,1,HR); PR(38,10,6,1,HR) // brows
+  PR(14,16,6,2,BL); PR(44,16,6,2,BL) // blush
+  if(anim==='happy'){PR(28,18,8,2,'#e06070');PR(30,20,4,1,'#c04050')}
+  else if(anim==='sing'){PR(28,18,8,Math.round(1+breathe*2),'#c05050')}
+  else{PR(28,18,6,2,'#d09080')}
+
+  // === Common: Neck ===
+  PR(24,24,14,4,SK); PR(22,28,18,2,SK2)
+
+  // === Form-specific rendering ===
+  if(form==='graduation')drawGrad()
+  else if(form==='live')drawLive()
+  else drawCEO()
+
+  // Ground shadow
+  PR(16,62,30,2,'rgba(0,0,0,0.1)')
+
+  // ======= 🎓 GRADUATION =======
+  function drawGrad(){
+    // Cap
+    PR(12,0,36,3,'#1a1a1a'); PR(14,-2,32,2,'#222')
+    PR(42,-2,2,4,'#ffd700') // tassel
+    PR(40,-3,1,2,'#ffd700') // tassel tip
+    // Gown body
+    PR(16,28,28,20,'#2a2a2a')
+    PR(18,28,24,4,'#333')   // shoulders
+    PR(16,44,28,4,'#1e1e1e') // hem shadow
+    // Shirt + bow tie
+    PR(26,28,10,3,'#f0f0f0') // collar
+    PR(28,30,6,4,'#8b5cf6')  // purple bow
+    PR(30,32,2,2,'#7c3aed')  // bow center
+    // Right arm + diploma
+    const ay=16+Math.round(Math.sin(frame/4)*2)
+    PR(46,ay,4,8,SK)
+    PR(50,ay-10,2,10,'#cc3333')  // red ribbon
+    PR(52,ay-8,4,6,'#f5e8d0')   // scroll
+    PR(52,ay-2,4,2,'#cc3333')   // red seal
+    // Left arm + bouquet
+    PR(6,30,4,8,SK)
+    PR(0,26,4,4,'#ffd700')    // sunflower
+    PR(2,30,4,4,'#ff69b4')    // pink flower
+    PR(4,28,2,4,'#4a8')       // leaves
+    PR(0,34,8,4,'#f5deb3')    // wrapper
+    PR(2,34,2,2,'#ffb6c1')    // pink bow
+    // Legs + socks + shoes
+    PR(18,48,8,8,'#333'); PR(34,48,8,8,'#333')
+    PR(18,56,8,4,'#fafafa'); PR(34,56,8,4,'#fafafa')
+    PR(18,60,8,2,'#1a1a1a'); PR(34,60,8,2,'#1a1a1a')
+    // Background: campus
+    PR(0,4,8,6,'#87ceeb66') // sky
+    PR(52,8,6,14,'#8899aa') // bell tower
+    PR(2,58,12,4,'#c4a882') // brick path
   }
 
-  // 腮红
-  ctx.fillStyle = 'rgba(255,150,150,0.25)'; ctx.fillRect(3 * G, 6 * G, G * 2, G); ctx.fillRect(11 * G, 6 * G, G * 2, G)
-
-  // 嘴
-  if (anim === 'happy') { P(6, 7, '#e04070'); P(8, 7, '#e04070') }
-  else if (anim === 'sing') { P(7, 7 + Math.round(breathe), '#cc6644') }
-  else { P(7, 7, '#cc8866') }
-
-  // === 按形态区分 ===
-  if (form === 'graduation') drawGraduation()
-  else if (form === 'live') drawLive()
-  else if (form === 'CEO') drawCEO()
-
-  // 阴影
-  ctx.fillStyle = 'rgba(0,0,0,0.1)'; ctx.fillRect(4 * G, 15 * G, 8 * G, G * 0.5)
-
-  // ===== 🎓 毕业生 =====
-  function drawGraduation() {
-    // 学士帽
-    for (let x = 3; x <= 11; x++) P(x, 0, '#1a1a1a')
-    P(9, -1, '#ffd700') // 金色帽穗
-
-    // 黑袍身体
-    for (let x = 4; x <= 10; x++) for (let y = 8; y <= 13; y++) P(x, y, '#2a2a2a')
-    // 白衬衫领口
-    P(5, 8, '#fff'); P(6, 8, '#fff'); P(8, 8, '#fff'); P(9, 8, '#fff')
-    // 紫色领结
-    P(6, 8, '#8b5cf6'); P(7, 8, '#8b5cf6'); P(8, 8, '#8b5cf6'); P(7, 9, '#7c3aed')
-
-    // 右手高举毕业证书
-    const armUpY = 6 + Math.round(Math.sin(frame / 4) * 1)
-    P(11, armUpY, skinColor); P(11, armUpY + 1, skinColor); P(12, armUpY - 3, skinColor)
-    // 毕业证书卷轴（红色绸带）
-    P(12, armUpY - 4, '#cc3333'); P(12, armUpY - 5, '#cc3333'); P(13, armUpY - 4, '#aa2222')
-
-    // 左手捧花束
-    P(3, 9, skinColor)
-    // 花束（向日葵+粉花+绿叶）
-    ctx.fillStyle = '#ffd700'; ctx.fillRect(1 * G, 7 * G, G * 1.5, G * 1.5)   // 向日葵
-    ctx.fillStyle = '#ff69b4'; ctx.fillRect(1 * G, 8 * G, G, G)               // 粉色花
-    ctx.fillStyle = '#4a8'; ctx.fillRect(2 * G, 8 * G, G, G)                  // 绿叶
-    ctx.fillStyle = '#f5deb3'; ctx.fillRect(1 * G, 9 * G, G * 3, G)           // 米色花束包装
-
-    // 腿 + 白袜 + 黑鞋
-    for (let x = 5; x <= 9; x++) P(x, 14, '#333')
-    for (let x = 5; x <= 9; x++) P(x, 15, '#fff')  // 白袜
+  // ======= 🎤 LIVE STREAMER =======
+  function drawLive(){
+    // White blouse
+    PR(16,28,28,14,'#f5f5f5')
+    PR(18,28,24,4,'#fafafa')   // collar highlight
+    PR(20,28,6,3,'#ffe0e5')    // pink accent L
+    PR(36,28,6,3,'#ffe0e5')    // pink accent R
+    PR(22,32,18,2,'#eee')      // frill
+    // Pink gaming chair
+    PR(10,40,8,10,'#ff8fa3'); PR(44,40,8,10,'#ff8fa3')
+    PR(12,48,38,4,'#ff7093')   // seat
+    // Desk
+    PR(34,34,20,2,'#8b6914')
+    PR(34,36,2,6,'#8b6914')
+    // Mic on desk
+    PR(48,26,4,10,'#333')     // stand
+    PR(46,24,6,4,'#666')      // pop filter
+    // Pink mug + laptop
+    PR(38,40,4,6,'#ffb6c1'); PR(39,43,2,2,'#ff4081')
+    PR(46,38,10,6,'#444')
+    // Neon "LIVE" sign
+    PR(8,4,16,4,'#ff4081')    // glow
+    PR(10,4,2,8,'#ff4081')    // L
+    // Wave hand
+    const wy=28+Math.round(Math.sin(frame/3)*3)
+    PR(48,wy,4,6,SK)
+    // Chat bubble
+    PR(2,50,22,6,'rgba(255,255,255,0.08)')
+    // Night window
+    PR(52,6,10,8,'#1a1a3e')
+    PR(54,8,2,3,'#ffd700')    // star
+    PR(52,12,12,4,'#333')     // city
   }
 
-  // ===== 🎤 女主播 =====
-  function drawLive() {
-    // 白色衬衫（荷叶领）
-    for (let x = 4; x <= 10; x++) for (let y = 8; y <= 12; y++) P(x, y, '#f5f5f5')
-    // 荷叶领褶皱
-    P(5, 8, '#e8e8e8'); P(9, 8, '#e8e8e8')
-    // 粉色领口装饰
-    P(6, 8, '#ffb6c1'); P(7, 8, '#ffb6c1'); P(8, 8, '#ffb6c1')
-
-    // 粉色电竞椅
-    for (let x = 3; x <= 11; x++) for (let y = 11; y <= 13; y++) if (x < 4 || x > 10 || y > 12) P(x, y, '#ff8fa3')
-    P(3, 10, '#ff8fa3'); P(11, 10, '#ff8fa3')
-
-    // 桌上麦克风
-    ctx.fillStyle = '#333'; ctx.fillRect(10 * G, 7 * G, G, G * 3)
-    ctx.fillStyle = '#666'; ctx.fillRect(9 * G, 6 * G, G * 2, G * 2) // 防喷罩
-
-    // 粉色马克杯
-    P(4, 11, '#ffb6c1'); P(4, 12, '#ffb6c1')
-    // 杯身爱心
-    P(4, 11, '#ff4081')
-
-    // 笔记本电脑
-    ctx.fillStyle = '#444'; ctx.fillRect(8 * G, 11 * G, G * 3, G * 2)
-
-    // 霓虹灯 "LIVE"
-    ctx.fillStyle = '#ff4081'
-    ctx.fillRect(2 * G, 0 * G, G * 3, G * 0.5)
-    ctx.fillRect(2 * G, 0 * G, G * 0.5, G * 2)
-
-    // 右手打招呼
-    const waveY = 8 + Math.round(Math.sin(frame / 3) * 2)
-    P(12, waveY, skinColor); P(12, waveY - 1, skinColor)
-  }
-
-  // ===== 💼 CEO =====
-  function drawCEO() {
-    // 深灰西装
-    for (let x = 4; x <= 10; x++) for (let y = 8; y <= 13; y++) P(x, y, '#3a3a4a')
-    // 白衬衫（敞开领口）
-    P(5, 8, '#fff'); P(6, 8, '#fff'); P(8, 8, '#fff'); P(9, 8, '#fff')
-    // 西装翻领
-    P(5, 8, '#2a2a3a'); P(9, 8, '#2a2a3a')
-
-    // 黑色皮椅
-    for (let x = 3; x <= 11; x++) for (let y = 12; y <= 14; y++) P(x, y, '#1a1a1a')
-
-    // 木质办公桌
-    ctx.fillStyle = '#5c3a1e'; ctx.fillRect(1 * G, 11 * G, G * 4, G * 2)
-
-    // 金色CEO名牌
-    ctx.fillStyle = '#c9a04e'; ctx.fillRect(4 * G, 10 * G, G * 2, G)
-
-    // 绿色台灯（亮着暖黄光）
-    ctx.fillStyle = '#2d5a27'; ctx.fillRect(10 * G, 7 * G, G, G * 3)
-    ctx.fillStyle = '#ffd700'; ctx.fillRect(10 * G, 6 * G, G, G) // 灯光
-
-    // 奖杯
-    ctx.fillStyle = '#ffd700'; ctx.fillRect(1 * G, 6 * G, G * 2, G * 2)
-
-    // 双手交叠桌面
-    for (let x = 5; x <= 9; x++) P(x, 10, skinColor)
-    P(5, 9, skinColor); P(9, 9, skinColor)
-
-    // 窗外白天城市
-    ctx.fillStyle = '#87ceeb'; ctx.fillRect(10 * G, 1 * G, G * 4, G * 1.5)  // 蓝天
-    ctx.fillStyle = '#aaa'; ctx.fillRect(10 * G, 2 * G, G * 2, G * 3)        // 高楼
-    ctx.fillStyle = '#ccc'; ctx.fillRect(12 * G, 1 * G, G, G * 4)
+  // ======= 💼 CEO =======
+  function drawCEO(){
+    // Dark suit
+    PR(16,28,28,18,'#3a3a4a')
+    PR(18,28,24,4,'#444')     // shoulders
+    PR(16,42,28,4,'#282838')  // hem shadow
+    // White shirt (open)
+    PR(26,28,10,8,'#f5f5f5')
+    PR(26,28,10,2,'#fff')     // collar top
+    PR(26,28,2,6,'#2a2a3a')   // left lapel
+    PR(36,28,2,6,'#2a2a3a')   // right lapel
+    // Leather chair
+    PR(10,42,8,8,'#1a1a1a'); PR(44,42,8,8,'#1a1a1a')
+    PR(12,48,38,3,'#151515')
+    // Wooden desk
+    PR(26,38,30,3,'#5c3a1e')
+    PR(28,40,28,1,'#4a2a10')
+    // CEO nameplate
+    PR(32,34,10,2,'#c9a04e')
+    PR(34,34,6,1,'#e8b86d')
+    // Green lamp
+    PR(50,22,4,14,'#2d5a27')
+    PR(48,20,6,4,'#3a6a33')
+    PR(50,18,2,2,'#ffd700')   // glow
+    // Trophy
+    PR(26,20,4,6,'#ffd700'); PR(28,18,1,2,'#fff')
+    // Coffee cup
+    PR(38,42,4,4,'#d4c5b0'); PR(40,44,1,1,'#8b6914')
+    // Laptop
+    PR(44,40,8,6,'#3a3a3a')
+    // Folded hands
+    PR(30,36,10,4,SK)
+    // Daytime city window
+    PR(52,4,10,6,'#87ceeb')
+    PR(52,6,2,2,'#fff')       // cloud
+    PR(54,4,4,10,'#aaa')      // building
   }
 }
 
