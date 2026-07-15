@@ -97,11 +97,11 @@ onMounted(() => {
 
     <!-- 底部导航 -->
     <nav class="bottom-nav">
-      <a @click.prevent="$router.push('/')" class="nav-item" :class="{ active: $route.path === '/' }">🏠<span>首页</span></a>
-      <a @click.prevent="$router.push('/music')" class="nav-item" :class="{ active: $route.path === '/music' }">🎼<span>歌曲</span></a>
-      <a @click.prevent="$router.push('/character')" class="nav-item" :class="{ active: $route.path === '/character' }">👗<span>换装</span></a>
-      <a @click.prevent="$router.push('/memory')" class="nav-item" :class="{ active: $route.path === '/memory' }">💫<span>回忆</span></a>
-      <a @click.prevent="$router.push('/chat')" class="nav-item" :class="{ active: $route.path === '/chat' }">💬<span>聊天</span></a>
+      <button @click="$router.push('/')" class="nav-item" :class="{ active: $route.path === '/' }">🏠<span>首页</span></button>
+      <button @click="$router.push('/music')" class="nav-item" :class="{ active: $route.path === '/music' }">🎼<span>歌曲</span></button>
+      <button @click="$router.push('/character')" class="nav-item" :class="{ active: $route.path === '/character' }">👗<span>换装</span></button>
+      <button @click="$router.push('/memory')" class="nav-item" :class="{ active: $route.path === '/memory' }">💫<span>回忆</span></button>
+      <button @click="$router.push('/chat')" class="nav-item" :class="{ active: $route.path === '/chat' }">💬<span>聊天</span></button>
     </nav>
   </div>
 </template>
@@ -120,6 +120,7 @@ onMounted(() => {
   display: flex; flex-direction: column; align-items: center; gap: 2px;
   color: #a0a0b8; text-decoration: none; font-size: 12px; padding: 8px 16px;
   border-radius: 8px; transition: all 0.15s;
+  background: none; border: none; font-family: inherit; cursor: pointer;
 }
 .nav-item:hover, .nav-item.active { color: #e8b86d; background: rgba(232,184,109,0.08); }
 .nav-item { cursor: pointer; }
