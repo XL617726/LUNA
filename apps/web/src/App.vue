@@ -7,6 +7,7 @@ import FirstMeet from '@/components/FirstMeet.vue'
 import SplashScreen from '@/components/SplashScreen.vue'
 import GuidedTour from '@/components/GuidedTour.vue'
 import ErrorBoundary from '@/components/ErrorBoundary.vue'
+import DemoMode from '@/components/DemoMode.vue'
 
 const charStore = useCharacterStore()
 const musicStore = useMusicStore()
@@ -14,6 +15,9 @@ const dialogueText = ref('')
 const showFirstMeet = ref(false)
 const showSplash = ref(true)
 const showTour = ref(false)
+
+// Demo mode: add ?demo to URL
+const isDemo = new URLSearchParams(window.location.search).has('demo')
 
 onMounted(() => {
   charStore.restore()
@@ -89,6 +93,9 @@ onMounted(() => {
     <ErrorBoundary>
       <router-view />
     </ErrorBoundary>
+
+    <!-- Demo mode (add ?demo to URL) -->
+    <DemoMode v-if="isDemo" />
 
     <!-- 底部导航 -->
     <nav class="bottom-nav">
