@@ -1,0 +1,18 @@
+{
+  "name": "LUNA · 星光歌姬",
+  "short_name": "LUNA",
+  "description": "一个会唱歌、会陪伴、保存朋友故事的数字音乐小世界",
+  "start_url": "/gift",
+  "display": "standalone",
+  "background_color": "#0f0f23",
+  "theme_color": "#0f0f23",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

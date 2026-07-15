@@ -1,0 +1,55 @@
+# ============================================
+#  LUNA v1.0 — .gitignore
+# ============================================
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+unpackage/
+apps/web/dist/
+apps/miniapp/unpackage/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.production
+
+# CloudBase
+cloudbaserc.json
+cloudfunctions/**/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test
+coverage/
+.nyc_output/
+
+# Vite
+apps/web/node_modules/.vite/
+
+# Temp
+_archive/
+tmp/
+temp/
+
+# Archive (old structure)
+_archive/
