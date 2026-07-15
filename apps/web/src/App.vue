@@ -90,9 +90,7 @@ onMounted(() => {
     <div v-if="dialogueText" class="dialogue-bubble">{{ dialogueText }}</div>
 
     <!-- 页面视图 -->
-    <ErrorBoundary>
-      <router-view />
-    </ErrorBoundary>
+    <router-view />
 
     <!-- Demo mode (add ?demo to URL) -->
     <DemoMode v-if="isDemo" />
