@@ -11,6 +11,11 @@ const sfx = useSoundEffects()
 const ambience = useAmbientSound()
 const streak = useDailyStreak()
 
+// Gift message
+const giftMessage = ref(localStorage.getItem('luna_gift_message') || '')
+const giftFrom = ref(localStorage.getItem('luna_gift_from') || '')
+const showGiftMessage = ref(false)
+
 // Time & weather
 const timeDisplay = computed(() => {
   const now = new Date()
@@ -155,8 +160,19 @@ onUnmounted(() => { if (idleTimer) clearTimeout(idleTimer); ambience.stop() })
     <button class="action-btn chat-nav" @click="sfx.click(); $router.push('/chat')">💬 聊天</button>
   </div>
 
-  <!-- 隐藏星星 -->
+  <!-- 隐藏星星 — 显示送礼人留言 -->
   <button class="easter-star" @click="handleStarClick" title="制作人留言">⭐</button>
+
+  <!-- 送礼人留言卡片 -->
+  <div class="gift-message-card" v-if="giftMessage" @click="showGiftMessage = !showGiftMessage">
+    <span class="gift-card-icon">💌</span>
+    <Transition name="bubble">
+      <div v-if="showGiftMessage" class="gift-card-content">
+        <p class="gift-text">{{ giftMessage }}</p>
+        <p class="gift-from">— {{ giftFrom }}</p>
+      </div>
+    </Transition>
+  </div>
 </template>
 
 <style scoped>
@@ -243,4 +259,19 @@ onUnmounted(() => { if (idleTimer) clearTimeout(idleTimer); ambience.stop() })
   background: none; border: none; font-size: 22px; cursor: pointer; opacity: 0.3; transition: opacity 0.2s;
 }
 .easter-star:hover { opacity: 0.8; }
+
+/* 送礼人留言卡片 */
+.gift-message-card {
+  position: fixed; bottom: 80px; left: 16px; z-index: 30; cursor: pointer;
+}
+.gift-card-icon { font-size: 24px; opacity: 0.6; transition: opacity 0.2s; }
+.gift-card-icon:hover { opacity: 1; }
+.gift-card-content {
+  position: absolute; bottom: 36px; left: 0;
+  padding: 14px 18px; background: rgba(22,33,62,0.96);
+  border: 1px solid rgba(255,182,193,0.25); border-radius: 14px;
+  min-width: 200px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.gift-text { font-size: 13px; color: #f0e6d3; line-height: 1.6; margin: 0; }
+.gift-from { font-size: 11px; color: #e8b86d; margin: 6px 0 0; text-align: right; }
 </style>
