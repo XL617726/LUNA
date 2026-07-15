@@ -4,6 +4,10 @@ import { useCharacterStore } from '@/stores/character'
 import { useMusicStore } from '@/stores/music'
 import { getDialogueEngine } from '@luna/ai-engine'
 import { getStorySystem } from '@luna/story-engine'
+import { useSoundEffects, useAmbientSound } from '@/composables/useSoundEffects'
+
+const sfx = useSoundEffects()
+const ambience = useAmbientSound()
 
 // Time & weather
 const timeDisplay = computed(() => {
@@ -70,8 +74,8 @@ function scheduleIdleDialogue() {
     scheduleIdleDialogue()
   }, 15000 + Math.random() * 30000) // 15-45秒随机
 }
-onMounted(() => scheduleIdleDialogue())
-onUnmounted(() => { if (idleTimer) clearTimeout(idleTimer) })
+onMounted(() => { scheduleIdleDialogue(); ambience.start() })
+onUnmounted(() => { if (idleTimer) clearTimeout(idleTimer); ambience.stop() })
 </script>
 
 <template>
@@ -132,11 +136,11 @@ onUnmounted(() => { if (idleTimer) clearTimeout(idleTimer) })
 
   <!-- 底部操作栏 -->
   <div class="action-bar">
-    <button class="action-btn mic-btn" @click="$router.push('/perform')">🎤 唱歌</button>
-    <button class="action-btn" @click="$router.push('/music')">🎼 歌曲</button>
-    <button class="action-btn" @click="$router.push('/character')">👗 换装</button>
-    <button class="action-btn" @click="$router.push('/memory')">💫 回忆</button>
-    <button class="action-btn chat-nav" @click="$router.push('/chat')">💬 聊天</button>
+    <button class="action-btn mic-btn" @click="sfx.click(); $router.push('/perform')">🎤 唱歌</button>
+    <button class="action-btn" @click="sfx.click(); $router.push('/music')">🎼 歌曲</button>
+    <button class="action-btn" @click="sfx.click(); $router.push('/character')">👗 换装</button>
+    <button class="action-btn" @click="sfx.click(); $router.push('/memory')">💫 回忆</button>
+    <button class="action-btn chat-nav" @click="sfx.click(); $router.push('/chat')">💬 聊天</button>
   </div>
 
   <!-- 隐藏星星 -->
