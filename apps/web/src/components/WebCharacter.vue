@@ -112,6 +112,13 @@ function drawPixelCharacter(
     for (let x = 9; x <= 10; x++) P(x, 5, '#222')
   }
 
+  // Blush
+  if (anim !== 'bow') {
+    ctx.fillStyle = 'rgba(255,150,150,0.3)'
+    ctx.fillRect(3 * G, 6 * G, G * 2, G)
+    ctx.fillRect(11 * G, 6 * G, G * 2, G)
+  }
+
   // Mouth
   if (anim === 'happy') {
     P(6, 7, '#e04070'); P(7, 7, '#e04070'); P(8, 7, '#e04070')
