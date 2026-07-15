@@ -98,3 +98,43 @@ describe('WorldEventBus', () => {
     expect(allEvents).toContain('bar')
   })
 })
+
+describe('Weather Edge Cases', () => {
+  it('should return null particles for clear weather', () => {
+    const ws = new WeatherSystem()
+    expect(ws.getParticleConfig()).toBeNull()
+  })
+
+  it('should allow manual weather override', () => {
+    const ws = new WeatherSystem()
+    ws.set('starfall', 0.8)
+    expect(ws.current.type).toBe('starfall')
+    expect(ws.current.intensity).toBe(0.8)
+    expect(ws.current.particles).toBe(true)
+  })
+
+  it('should handle zero intensity', () => {
+    const ws = new WeatherSystem()
+    ws.set('snow', 0)
+    expect(ws.current.particles).toBe(false)
+  })
+
+  it('should return correct particle counts per weather type', () => {
+    const ws = new WeatherSystem()
+    ws.set('rain', 0.5)
+    expect(ws.getParticleConfig()?.count).toBe(60)
+    ws.set('snow', 0.5)
+    expect(ws.getParticleConfig()?.count).toBe(40)
+    ws.set('starfall', 0.5)
+    expect(ws.getParticleConfig()?.count).toBe(30)
+  })
+
+  it('should not crash on rapid weather changes', () => {
+    const ws = new WeatherSystem()
+    for (let i = 0; i < 100; i++) {
+      ws.set('rain', Math.random())
+      ws.set('clear', 0)
+    }
+    expect(ws.current.type).toBe('clear')
+  })
+})
