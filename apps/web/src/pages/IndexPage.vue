@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useCharacterStore } from '@/stores/character'
 import { useMusicStore } from '@/stores/music'
 import { getDialogueEngine } from '@luna/ai-engine'
@@ -25,6 +25,7 @@ const daysSinceFirst = computed(() => {
 import WebCharacter from '@/components/WebCharacter.vue'
 import WebSceneManager from '@/components/WebSceneManager.vue'
 import Starfield from '@/components/Starfield.vue'
+import RoomAmbience from '@/components/RoomAmbience.vue'
 
 const charStore = useCharacterStore()
 const musicStore = useMusicStore()
@@ -60,10 +61,22 @@ function handleStarClick() {
   const r = story.triggerStory('hidden_star')
   if (r) showDialogue(r.dialogue, 4000)
 }
+
+// Random idle dialogue — LUNA偶尔自言自语
+let idleTimer: number | null = null
+function scheduleIdleDialogue() {
+  idleTimer = window.setTimeout(() => {
+    if (!dialogueText.value) showDialogue(dialogue.speak('idle'), 2500)
+    scheduleIdleDialogue()
+  }, 15000 + Math.random() * 30000) // 15-45秒随机
+}
+onMounted(() => scheduleIdleDialogue())
+onUnmounted(() => { if (idleTimer) clearTimeout(idleTimer) })
 </script>
 
 <template>
   <Starfield />
+  <RoomAmbience />
   <WebSceneManager :form="charStore.currentForm" />
 
   <!-- 房间状态栏 -->
