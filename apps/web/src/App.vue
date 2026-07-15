@@ -6,6 +6,7 @@ import { useMusicStore } from '@/stores/music'
 import FirstMeet from '@/components/FirstMeet.vue'
 import SplashScreen from '@/components/SplashScreen.vue'
 import GuidedTour from '@/components/GuidedTour.vue'
+import ErrorBoundary from '@/components/ErrorBoundary.vue'
 
 const charStore = useCharacterStore()
 const musicStore = useMusicStore()
@@ -85,7 +86,9 @@ onMounted(() => {
     <div v-if="dialogueText" class="dialogue-bubble">{{ dialogueText }}</div>
 
     <!-- 页面视图 -->
-    <router-view />
+    <ErrorBoundary>
+      <router-view />
+    </ErrorBoundary>
 
     <!-- 底部导航 -->
     <nav class="bottom-nav">

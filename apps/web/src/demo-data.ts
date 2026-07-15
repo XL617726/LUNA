@@ -1,8 +1,14 @@
 /**
  * Demo data — 让 LUNA 首次启动就有内容可展示
  */
-// Set default nickname
+// Set default nickname and personal message
 if (!localStorage.getItem('luna_nickname')) localStorage.setItem('luna_nickname', 'L shuo')
+if (!localStorage.getItem('luna_gift_message')) {
+  localStorage.setItem('luna_gift_message', '愿LUNA的歌声，陪你度过每一个重要的日子。')
+}
+if (!localStorage.getItem('luna_gift_from')) {
+  localStorage.setItem('luna_gift_from', '你的朋友')
+}
 
 import { getCharacterEngine } from '@luna/character-engine'
 import { getMemorySystem, getDialogueEngine } from '@luna/ai-engine'

@@ -1,5 +1,32 @@
 # Changelog
 
+## v1.0.2 — Gift-Ready (2026-07-15)
+
+### New Features
+- Personal gift message system (customizable note in LUNA's room)
+- Guided tour for first-time visitors (4-step walkthrough)
+- Daily check-in streak with milestone rewards (3/7/30/100 days)
+- Melody synthesizer (3 preloaded songs, real note sequences with harmony)
+- Floating music notes during performance
+- Room ambience (drifting clouds, dust particles, random idle dialogue)
+- Ambient room sound + UI click effects (Web Audio API)
+- Splash loading screen with progress bar
+- Gift landing page (/gift) as share entry point
+- Mobile responsive layout
+- Production server (node server.cjs) + Vercel deploy config
+- One-click gift launcher (start-gift.ps1)
+- Welcome-back greeting with day counter and nickname
+- Full Settings page: nickname, gift message, data export, clear data
+- CLAUDE.md for AI-assisted development
+
+### Improvements
+- 4 demo songs with real timestamps, 9 seeded memories
+- Enhanced pixel character rendering
+- Room furniture interactions
+- Better performance page flow
+
+---
+
 ## v1.0.0 — Release Candidate (2026-07-15)
 
 ### Architecture

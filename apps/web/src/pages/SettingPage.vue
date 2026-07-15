@@ -15,9 +15,17 @@ const nickname = ref(localStorage.getItem('luna_nickname') || 'L shuo')
 const eggCount = ref(story.getUnlockedStories().length)
 const memoryCount = ref(memory.count)
 
+const giftMsg = ref(localStorage.getItem('luna_gift_message') || '')
+const giftFromName = ref(localStorage.getItem('luna_gift_from') || '')
+
 function saveNickname() {
   localStorage.setItem('luna_nickname', nickname.value)
   alert('已保存 ✨')
+}
+function saveGiftMessage() {
+  localStorage.setItem('luna_gift_message', giftMsg.value)
+  localStorage.setItem('luna_gift_from', giftFromName.value)
+  alert('留言已保存 💌')
 }
 
 function handleClearData() {
@@ -64,6 +72,16 @@ function handleResetFirstMeet() {
       <div class="row">
         <input v-model="nickname" class="input" placeholder="LUNA 该怎么称呼你？" />
         <button class="btn-sm" @click="saveNickname">保存</button>
+      </div>
+    </section>
+
+    <!-- 礼物留言 -->
+    <section class="section">
+      <h3>💌 礼物留言</h3>
+      <input v-model="giftMsg" class="input" placeholder="想对TA说的话..." style="margin-bottom:8px" />
+      <div class="row">
+        <input v-model="giftFromName" class="input" placeholder="署名" />
+        <button class="btn-sm" @click="saveGiftMessage">保存</button>
       </div>
     </section>
 

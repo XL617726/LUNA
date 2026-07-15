@@ -28,9 +28,15 @@
     },
     {
       "path": "pages/setting/setting",
-      "style": {
-        "navigationBarTitleText": "设置"
-      }
+      "style": { "navigationBarTitleText": "设置" }
+    },
+    {
+      "path": "pages/chat/chat",
+      "style": { "navigationBarTitleText": "聊天" }
+    },
+    {
+      "path": "pages/perform/perform",
+      "style": { "navigationBarTitleText": "表演", "navigationStyle": "custom" }
     }
   ],
   "globalStyle": {
