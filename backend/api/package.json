@@ -1,0 +1,24 @@
+{
+  "name": "@luna/backend-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "LUNA Backend API — Node.js + MongoDB + COS",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@luna/shared-types": "workspace:*",
+    "mongoose": "^8.0.0",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.0",
+    "tsx": "^4.16.0",
+    "typescript": "^5.5.0"
+  }
+}

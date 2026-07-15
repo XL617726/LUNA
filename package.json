@@ -1,0 +1,32 @@
+{
+  "name": "luna-project",
+  "version": "2.0.0",
+  "private": true,
+  "description": "LUNA · 星光歌姬 — Digital Character Life System",
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "build": "pnpm --recursive build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p packages/shared-types/tsconfig.json",
+    "init": "tsx scripts/init-project.ts",
+    "clean": "pnpm --recursive clean"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.45.0",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "eslint": "^9.0.0",
+    "tsx": "^4.16.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.1.4",
+    "vitest": "^2.0.0",
+    "vue-router": "^5.1.0",
+    "vue-tsc": "^2.2.12"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "LUNA · 星光歌姬",
+  "appid": "__UNI__LUNA001",
+  "description": "一个会唱歌、会陪伴、保存朋友故事的小世界",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "postcss": true,
+      "minified": true,
+      "newFeature": true
+    },
+    "usingComponents": true,
+    "permission": {
+      "scope.userLocation": {
+        "desc": "用于记录回忆的位置信息"
+      }
+    },
+    "requiredBackgroundModes": ["audio"],
+    "lazyCodeLoading": "requiredComponents"
+  },
+  "uniStatistics": {
+    "enable": false
+  },
+  "vueVersion": "3"
+}

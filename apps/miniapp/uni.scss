@@ -1,0 +1,94 @@
+/* ========================================
+   LUNA · 星光歌姬 — 全局主题变量
+   设计方向：星空 / 舞台 / 温暖
+   ======================================== */
+
+/* --- 主色调：深邃夜空 --- */
+$color-bg-primary: #0f0f23;
+$color-bg-secondary: #1a1a2e;
+$color-bg-card: #16213e;
+$color-bg-overlay: rgba(0, 0, 0, 0.6);
+
+/* --- 强调色：星光金色 --- */
+$color-accent: #e8b86d;
+$color-accent-light: #f5d89a;
+$color-accent-dark: #c9a04e;
+
+/* --- 辅助色 --- */
+$color-star: #ffd700;
+$color-star-secondary: #87ceeb;
+$color-luna-pink: #ffb6c1;
+$color-graduation: #4a6fa5;
+$color-live: #e04070;
+$color-ceo: #c9a04e;
+
+/* --- 文字色 --- */
+$color-text-primary: #f0e6d3;
+$color-text-secondary: #a0a0b8;
+$color-text-muted: #6a6a7e;
+
+/* --- 功能色 --- */
+$color-success: #7ecb76;
+$color-warning: #f0c060;
+$color-error: #e06060;
+
+/* --- 像素风格 --- */
+$pixel-border: 2px;
+$pixel-radius: 0px;
+$shadow-pixel: 4px 4px 0px rgba(0, 0, 0, 0.4);
+
+/* --- 间距 --- */
+$space-xs: 8rpx;
+$space-sm: 16rpx;
+$space-md: 24rpx;
+$space-lg: 32rpx;
+$space-xl: 48rpx;
+
+/* --- 字体 --- */
+$font-pixel: 'Courier New', monospace;
+$font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-size-xs: 20rpx;
+$font-size-sm: 24rpx;
+$font-size-md: 28rpx;
+$font-size-lg: 36rpx;
+$font-size-xl: 48rpx;
+
+/* --- 动画 --- */
+$transition-fast: 0.15s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.5s ease;
+$transition-character: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+/* --- Z-index 层级 --- */
+$z-particle: 1;
+$z-character: 10;
+$z-stage: 20;
+$z-ui: 30;
+$z-overlay: 50;
+$z-modal: 100;
+
+/* --- 全局样式 --- */
+page {
+  background-color: $color-bg-primary;
+  color: $color-text-primary;
+  font-family: $font-body;
+  font-size: $font-size-md;
+  overflow: hidden;
+}
+
+/* 禁止用户选择（游戏感） */
+page {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 像素风格滚动条（小程序可能不支持，作为降级） */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: $color-bg-secondary;
+}
+::-webkit-scrollbar-thumb {
+  background: $color-accent-dark;
+}

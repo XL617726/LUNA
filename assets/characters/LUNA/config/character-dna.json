@@ -1,0 +1,148 @@
+{
+  "id": "LUNA-001",
+  "name": "LUNA",
+  "version": "2.0.0",
+  "bible": "../CHARACTER_BIBLE.md",
+
+  "input_requirements": {
+    "photos": ["front_face", "half_body", "side_profile"],
+    "descriptions": ["hairstyle", "personality_keywords", "favorite_clothes", "favorite_music"]
+  },
+
+  "dna": {
+    "face": {
+      "shape": "oval",
+      "jawline": "soft_curve",
+      "proportion": "standard_three_five"
+    },
+    "eyes": {
+      "type": "large_soft",
+      "shape": "crescent_moon",
+      "corner": "slightly_upturned",
+      "size": "medium_large"
+    },
+    "eyebrows": { "type": "natural_arch", "thickness": "medium", "color": "dark_brown" },
+    "nose": { "type": "small_straight", "bridge": "medium" },
+    "mouth": {
+      "type": "gentle_smile",
+      "corner": "naturally_upturned",
+      "thickness": "medium",
+      "color": "warm_pink"
+    },
+    "skin": { "tone": "warm_fair", "undertone": "warm" },
+    "hair": {
+      "color": "black_dark_brown",
+      "length": "shoulder_long",
+      "bangs": "air_bangs_left_part",
+      "texture": "soft_slight_wave"
+    },
+    "body": {
+      "type": "slim_petite",
+      "height_game_scale": "160cm",
+      "head_body_ratio": "1:6.5",
+      "head_percent": 35,
+      "body_percent": 65
+    },
+    "signatureFeatures": [
+      "crescent_moon_eye_curve",
+      "naturally_upturned_lip_corner",
+      "left_part_air_bangs",
+      "soft_jawline_curve",
+      "natural_arch_eyebrows"
+    ]
+  },
+
+  "personality": {
+    "id": "warm_music_dreamer",
+    "traits": { "warmth": 0.9, "energy": 0.7, "nostalgia": 0.8, "dream": 0.85 },
+    "archetype": "gentle_performer",
+    "speakingStyle": "short_warm_sentences",
+    "emojiUsage": "moderate",
+    "mbti_vibe": "INFP",
+    "keywords": ["温柔", "开朗", "有一点害羞", "怀旧", "有梦想", "音乐爱好者"]
+  },
+
+  "outfits": [
+    {
+      "id": "graduation", "name": "毕业生", "theme": "那个夏天",
+      "unlockLevel": 1, "scene": "school",
+      "clothing": {
+        "top": "white_shirt", "outer": "black_gown", "head": "graduation_cap",
+        "accessories": ["bouquet", "diploma"]
+      },
+      "colors": { "primary": "#4a6fa5", "secondary": "#ffffff", "accent": "#ffd700" },
+      "mood": "nostalgic_warm_youthful"
+    },
+    {
+      "id": "live", "name": "女主播", "theme": "第一次站上舞台",
+      "unlockLevel": 2, "scene": "live",
+      "clothing": {
+        "top": "casual_chic", "bottom": "fashion_skirt",
+        "accessories": ["headset_mic", "rgb_accents"]
+      },
+      "colors": { "primary": "#e04070", "secondary": "#ffffff", "accent": "#ff69b4" },
+      "mood": "energetic_confident_happy"
+    },
+    {
+      "id": "CEO", "name": "CEO", "theme": "未来的自己",
+      "unlockLevel": 3, "scene": "office",
+      "clothing": {
+        "top": "white_shirt", "outer": "black_blazer", "bottom": "suit_pants",
+        "accessories": ["tie", "thin_glasses", "watch"]
+      },
+      "colors": { "primary": "#2a2a4e", "secondary": "#ffffff", "accent": "#c9a04e" },
+      "mood": "confident_calm_successful"
+    }
+  ],
+
+  "animations": {
+    "idle":    { "frames": 8,  "fps": 8,  "loop": true,  "description": "待机呼吸 + 眨眼 + 微动" },
+    "sing":    { "frames": 12, "fps": 10, "loop": true,  "description": "拿麦克风唱歌 + 嘴型变化 + 身体摆动" },
+    "dance":   { "frames": 16, "fps": 12, "loop": true,  "description": "左步/右步/转身/举手/头发物理" },
+    "happy":   { "frames": 12, "fps": 10, "loop": true,  "description": "举手欢呼 + 笑脸 + 星星眼" },
+    "bow":     { "frames": 8,  "fps": 6,  "loop": false, "description": "鞠躬 + 手放胸前 + 谢幕" }
+  },
+
+  "expressions": {
+    "neutral":   { "id": "neutral",   "name": "普通",   "eyes": "open",    "mouth": "closed_slight_smile" },
+    "happy":     { "id": "happy",     "name": "开心",   "eyes": "crescent", "mouth": "open_smile" },
+    "shy":       { "id": "shy",       "name": "害羞",   "eyes": "half",     "mouth": "small_smile", "blush": true },
+    "surprised": { "id": "surprised", "name": "惊讶",   "eyes": "wide",     "mouth": "open_round" },
+    "singing":   { "id": "singing",   "name": "唱歌",   "eyes": "half",     "mouth": "open_varying" },
+    "excited":   { "id": "excited",   "name": "兴奋",   "eyes": "sparkle",  "mouth": "big_smile" },
+    "sleepy":    { "id": "sleepy",    "name": "困倦",   "eyes": "closed",   "mouth": "small_pout" }
+  },
+
+  "live2d": {
+    "enabled": false,
+    "modelPath": "../live2d/LUNA.model3.json",
+    "parameters": {
+      "eyeOpen": "ParamEyeLOpen",
+      "mouthOpen": "ParamMouthOpenY",
+      "breath": "ParamBreath",
+      "bodyRotation": "ParamAngleX",
+      "mouthForm": "ParamMouthForm"
+    },
+    "layers": [
+      "HEAD", "FACE", "LEFT_EYE", "RIGHT_EYE", "EYEBROWS",
+      "MOUTH_CLOSED", "MOUTH_OPEN", "FRONT_HAIR", "BACK_HAIR",
+      "BODY", "LEFT_ARM", "RIGHT_ARM", "HAND"
+    ]
+  },
+
+  "assetPipeline": {
+    "status": "awaiting_photos",
+    "steps": [
+      { "step": 1,  "name": "photo_analysis",       "tool": "manual",       "output": "feature_analysis.json" },
+      { "step": 2,  "name": "concept_design",        "tool": "GPT_Image",    "output": "LUNA_concept.png" },
+      { "step": 3,  "name": "pixel_sprite_base",     "tool": "GPT_Image",    "output": "idle.png / sing.png / dance.png" },
+      { "step": 4,  "name": "expression_sheet",      "tool": "GPT_Image",    "output": "expressions/*.png" },
+      { "step": 5,  "name": "outfit_variants",       "tool": "GPT_Image",    "output": "outfits/*.png" },
+      { "step": 6,  "name": "sprite_correction",     "tool": "Aseprite",     "output": "corrected sprites" },
+      { "step": 7,  "name": "sprite_sheet_pack",     "tool": "Aseprite",     "output": "spritesheet.png + .json" },
+      { "step": 8,  "name": "live2d_modeling",       "tool": "Cubism",       "output": "LUNA.model3.json" },
+      { "step": 9,  "name": "expression_binding",    "tool": "Cubism",       "output": "motions/*.motion3.json" },
+      { "step": 10, "name": "asset_packaging",       "tool": "Claude_Code",  "output": "ready to import" }
+    ]
+  }
+}

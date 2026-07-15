@@ -1,0 +1,9 @@
+{
+  "name": "@luna/pixi-engine",
+  "version": "2.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "description": "LUNA PixiJS Renderer — 高性能2D渲染引擎",
+  "dependencies": { "@luna/shared-types": "workspace:*", "@luna/character-engine": "workspace:*" }
+}

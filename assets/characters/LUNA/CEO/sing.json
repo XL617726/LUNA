@@ -1,0 +1,10 @@
+﻿{
+    "fps":  10,
+    "file":  "sing.png",
+    "name":  "sing",
+    "frames":  12,
+    "description":  "LUNA CEO - sing animation",
+    "frameWidth":  128,
+    "loop":  true,
+    "frameHeight":  128
+}

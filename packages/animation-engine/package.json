@@ -1,0 +1,15 @@
+﻿{
+    "version":  "1.0.0",
+    "dependencies":  {
+                         "@luna/shared-types":  "workspace:*"
+                     },
+    "types":  "./src/index.ts",
+    "scripts":  {
+                    "clean":  "rm -rf dist",
+                    "typecheck":  "tsc --noEmit"
+                },
+    "name":  "@luna/animation-engine",
+    "private":  true,
+    "description":  "动画引擎 — 音乐驱动的Sprite动画状态机",
+    "main":  "./src/index.ts"
+}

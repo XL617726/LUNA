@@ -1,0 +1,15 @@
+﻿{
+    "version":  "1.0.0",
+    "dependencies":  {
+                         "@luna/shared-types":  "workspace:*"
+                     },
+    "types":  "./src/index.ts",
+    "scripts":  {
+                    "clean":  "rm -rf dist",
+                    "typecheck":  "tsc --noEmit"
+                },
+    "name":  "@luna/ai-engine",
+    "private":  true,
+    "description":  "AI引擎 — 人格、对话、记忆、成长系统",
+    "main":  "./src/index.ts"
+}

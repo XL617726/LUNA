@@ -1,0 +1,10 @@
+﻿{
+    "fps":  10,
+    "file":  "happy.png",
+    "name":  "happy",
+    "frames":  12,
+    "description":  "LUNA graduation - happy animation",
+    "frameWidth":  128,
+    "loop":  true,
+    "frameHeight":  128
+}

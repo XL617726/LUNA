@@ -1,0 +1,10 @@
+﻿{
+    "fps":  6,
+    "file":  "bow.png",
+    "name":  "bow",
+    "frames":  8,
+    "description":  "LUNA graduation - bow animation",
+    "frameWidth":  128,
+    "loop":  false,
+    "frameHeight":  128
+}

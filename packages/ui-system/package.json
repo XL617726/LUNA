@@ -1,0 +1,15 @@
+﻿{
+    "version":  "1.0.0",
+    "dependencies":  {
+                         "@luna/shared-types":  "workspace:*"
+                     },
+    "types":  "./src/index.ts",
+    "scripts":  {
+                    "clean":  "rm -rf dist",
+                    "typecheck":  "tsc --noEmit"
+                },
+    "name":  "@luna/ui-system",
+    "private":  true,
+    "description":  "UI系统 — 跨平台组件库、像素风格主题",
+    "main":  "./src/index.ts"
+}

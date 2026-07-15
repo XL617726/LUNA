@@ -1,0 +1,10 @@
+﻿{
+    "fps":  8,
+    "file":  "idle.png",
+    "name":  "idle",
+    "frames":  8,
+    "description":  "LUNA live - idle animation",
+    "frameWidth":  128,
+    "loop":  true,
+    "frameHeight":  128
+}

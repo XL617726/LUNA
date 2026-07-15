@@ -1,0 +1,26 @@
+{
+  "name": "@luna/miniapp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LUNA 微信小程序 — uni-app + Vue3",
+  "scripts": {
+    "dev": "uni -p mp-weixin",
+    "build": "uni build -p mp-weixin",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@luna/character-engine": "workspace:*",
+    "@luna/animation-engine": "workspace:*",
+    "@luna/audio-engine": "workspace:*",
+    "@luna/ai-engine": "workspace:*",
+    "@luna/story-engine": "workspace:*",
+    "@luna/ui-system": "workspace:*",
+    "@luna/shared-types": "workspace:*",
+    "pinia": "^2.1.0",
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^3.0.0",
+    "@dcloudio/uni-mp-weixin": "^3.0.0"
+  }
+}

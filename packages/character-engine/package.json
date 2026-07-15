@@ -1,0 +1,15 @@
+﻿{
+    "version":  "1.0.0",
+    "dependencies":  {
+                         "@luna/shared-types":  "workspace:*"
+                     },
+    "types":  "./src/index.ts",
+    "scripts":  {
+                    "clean":  "rm -rf dist",
+                    "typecheck":  "tsc --noEmit"
+                },
+    "name":  "@luna/character-engine",
+    "private":  true,
+    "description":  "角色引擎 — LUNA角色档案、形态管理、状态控制",
+    "main":  "./src/index.ts"
+}

@@ -1,0 +1,10 @@
+﻿{
+    "fps":  12,
+    "file":  "dance.png",
+    "name":  "dance",
+    "frames":  16,
+    "description":  "LUNA live - dance animation",
+    "frameWidth":  128,
+    "loop":  true,
+    "frameHeight":  128
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@luna/live2d-engine",
+  "version": "2.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "description": "LUNA Live2D Engine — Cubism模型加载/动作/表情控制",
+  "dependencies": { "@luna/shared-types": "workspace:*" }
+}

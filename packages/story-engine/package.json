@@ -1,0 +1,15 @@
+﻿{
+    "version":  "1.0.0",
+    "dependencies":  {
+                         "@luna/shared-types":  "workspace:*"
+                     },
+    "types":  "./src/index.ts",
+    "scripts":  {
+                    "clean":  "rm -rf dist",
+                    "typecheck":  "tsc --noEmit"
+                },
+    "name":  "@luna/story-engine",
+    "private":  true,
+    "description":  "剧情引擎 — 彩蛋触发、隐藏剧情管理",
+    "main":  "./src/index.ts"
+}

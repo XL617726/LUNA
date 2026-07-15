@@ -1,0 +1,10 @@
+﻿{
+    "fps":  4,
+    "file":  "emotion.png",
+    "name":  "emotion",
+    "frames":  6,
+    "description":  "LUNA CEO - emotion animation",
+    "frameWidth":  64,
+    "loop":  false,
+    "frameHeight":  64
+}

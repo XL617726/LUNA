@@ -1,0 +1,15 @@
+﻿{
+    "version":  "1.0.0",
+    "dependencies":  {
+                         "@luna/shared-types":  "workspace:*"
+                     },
+    "types":  "./src/index.ts",
+    "scripts":  {
+                    "clean":  "rm -rf dist",
+                    "typecheck":  "tsc --noEmit"
+                },
+    "name":  "@luna/audio-engine",
+    "private":  true,
+    "description":  "音频引擎 — 音频加载、播放、BPM/能量分析",
+    "main":  "./src/index.ts"
+}

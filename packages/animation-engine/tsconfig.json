@@ -1,0 +1,27 @@
+﻿{
+    "include":  [
+                    "src"
+                ],
+    "exclude":  [
+                    "node_modules",
+                    "dist"
+                ],
+    "compilerOptions":  {
+                            "baseUrl":  ".",
+                            "resolveJsonModule":  true,
+                            "noImplicitAny":  false,
+                            "moduleResolution":  "bundler",
+                            "outDir":  "./dist",
+                            "strict":  false,
+                            "target":  "ES2022",
+                            "esModuleInterop":  true,
+                            "skipLibCheck":  true,
+                            "module":  "ESNext",
+                            "rootDir":  "../../",
+                            "paths":  {
+                                          "@luna/shared-types":  [
+                                                                     "../shared-types/src"
+                                                                 ]
+                                      }
+                        }
+}
