@@ -2,7 +2,7 @@
  * LUNA Service Worker
  * 提供离线缓存支持，让 PWA 在无网络时也能打开
  */
-const CACHE = 'luna-v1.0.5'
+const CACHE = 'luna-v1.0.25'
 const ASSETS = [
   '/',
   '/gift',
