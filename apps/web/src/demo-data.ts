@@ -24,6 +24,10 @@ export function seedDemoData() {
   // Add demo memories
   memory.add('milestone', { name: 'LUNA 诞生', description: '2026年夏天，LUNA 第一次睁开眼睛' })
   memory.add('first_upload', { songName: '夏天的风' })
+  memory.add('interaction', { userSaid: '你好呀', lunaSaid: '你来啦～今天想听什么歌？' })
+  memory.add('milestone', { name: '第一次对话', description: '你第一次和 LUNA 说话' })
+  memory.add('interaction', { userSaid: '唱首歌吧', lunaSaid: '这首歌送给你 🎵' })
+  memory.add('favorite_song', { songName: '夜空中最亮的星', playCount: 5 })
 
   // Trigger first-meet story
   story.checkTriggers({ isFirstLaunch: true, isNightTime: false, isBirthday: false, consecutivePlays: 0, firstUpload: false })

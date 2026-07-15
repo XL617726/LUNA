@@ -48,6 +48,7 @@ function handleFirstMeetComplete() {
       <router-link to="/music" class="nav-item">🎼<span>歌曲</span></router-link>
       <router-link to="/character" class="nav-item">👗<span>换装</span></router-link>
       <router-link to="/memory" class="nav-item">💫<span>回忆</span></router-link>
+      <router-link to="/chat" class="nav-item">💬<span>聊天</span></router-link>
     </nav>
   </div>
 </template>
