@@ -47,4 +47,27 @@ describe('CharacterEngine', () => {
     engine.setState('sing')
     expect(engine.currentState).toBe('sing')
   })
+
+  it('should return all three forms', () => {
+    const forms = engine.getAllForms()
+    expect(forms.length).toBe(3)
+    expect(forms.map(f => f.id)).toEqual(['graduation', 'live', 'CEO'])
+  })
+
+  it('should track form when switching', () => {
+    engine.switchForm('live')
+    engine.recordPlay()
+    engine.recordSong()
+    expect(engine.stats.totalPlays).toBe(1)
+    expect(engine.stats.totalSongs).toBe(1)
+  })
+
+  it('should handle rapid switching without error', () => {
+    const forms = ['graduation', 'live', 'CEO'] as const
+    for (let i = 0; i < 50; i++) {
+      engine.switchForm(forms[i % 3])
+    }
+    // After 50 rapid switches, form should still be valid
+    expect(['graduation','live','CEO']).toContain(engine.currentForm)
+  })
 })

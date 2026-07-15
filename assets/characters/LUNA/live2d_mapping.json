@@ -1,0 +1,96 @@
+{
+  "version": "1.0.0",
+  "cubism_version": "4",
+  "description": "LUNA Live2D 参数映射 — Audio Engine 输出 → Live2D 参数",
+
+  "parameters": {
+    "body_rotation": {
+      "x": "ParamBodyAngleX",
+      "y": "ParamBodyAngleY",
+      "z": "ParamBodyAngleZ",
+      "range": [-30, 30]
+    },
+    "head_rotation": {
+      "x": "ParamAngleX",
+      "y": "ParamAngleY",
+      "z": "ParamAngleZ",
+      "range": [-15, 15]
+    },
+    "eyes": {
+      "left_open": { "id": "ParamEyeLOpen", "range": [0, 1], "default": 0.8 },
+      "right_open": { "id": "ParamEyeROpen", "range": [0, 1], "default": 0.8 },
+      "blink_speed": 0.05
+    },
+    "mouth": {
+      "open_y": { "id": "ParamMouthOpenY", "range": [0, 1], "default": 0 },
+      "form": { "id": "ParamMouthForm", "range": [-1, 1], "default": 0 }
+    },
+    "emotions": {
+      "smile": { "id": "Smile", "range": [0, 1] },
+      "angry": { "id": "Angry", "range": [0, 1] },
+      "sad": { "id": "Sad", "range": [0, 1] },
+      "happy": { "id": "Happy", "range": [0, 1] }
+    },
+    "breath": {
+      "id": "ParamBreath",
+      "range": [0, 1],
+      "frequency": 0.25,
+      "default": 0.5
+    }
+  },
+
+  "audio_drive": {
+    "volume_to_mouth": {
+      "source": "audio.volume",
+      "target": "ParamMouthOpenY",
+      "multiplier": 1.2,
+      "smoothing": 0.3
+    },
+    "beat_to_body": {
+      "source": "audio.beat",
+      "target": "ParamBodyAngleX",
+      "intensity": 5,
+      "decay": 0.5
+    },
+    "energy_to_eyes": {
+      "source": "audio.energy",
+      "target": ["ParamEyeLOpen", "ParamEyeROpen"],
+      "base": 0.8,
+      "multiplier": 0.3
+    },
+    "climax_to_emotion": {
+      "source": "audio.isClimax",
+      "target": "Happy",
+      "value": 1.0,
+      "duration_ms": 2000
+    }
+  },
+
+  "animation_state_to_live2d": {
+    "idle": {
+      "motion_file": "motions/idle.motion3.json",
+      "expression_file": "expressions/normal.exp3.json",
+      "loop": true
+    },
+    "sing": {
+      "motion_file": "motions/sing.motion3.json",
+      "expression_file": "expressions/singing.exp3.json",
+      "loop": true
+    },
+    "dance": {
+      "motion_file": "motions/dance.motion3.json",
+      "expression_file": "expressions/happy.exp3.json",
+      "loop": true
+    },
+    "happy": {
+      "motion_file": "motions/happy.motion3.json",
+      "expression_file": "expressions/happy.exp3.json",
+      "loop": true
+    },
+    "bow": {
+      "motion_file": "motions/bow.motion3.json",
+      "expression_file": "expressions/normal.exp3.json",
+      "loop": false
+    }
+  }
+}

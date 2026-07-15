@@ -1,0 +1,119 @@
+{
+  "id": "LUNA-001",
+  "name": "LUNA",
+  "version": "1.0.0",
+  "identity_sheet": "./identity_sheet.md",
+
+  "identity": {
+    "face": {
+      "shape": "oval",
+      "jawline": "soft_curve",
+      "eyes": "round_almond_warm",
+      "eyebrows": "natural_straight",
+      "nose": "small_straight",
+      "mouth": "upturned_gentle_smile",
+      "skin": "warm_fair"
+    },
+    "hair": {
+      "color": "dark_brown",
+      "length": "shoulder",
+      "bangs": "side_part_air",
+      "texture": "soft_slight_wave"
+    },
+    "body": {
+      "height_game_scale": "160cm",
+      "build": "slim_petite",
+      "head_body_ratio": "30:70"
+    },
+    "personality": {
+      "traits": ["warm", "cheerful", "music_lover", "slightly_shy", "nostalgic", "dreamer"],
+      "mbti_vibe": "INFP",
+      "speaking_style": "short_warm_sentences"
+    },
+    "signature_features": [
+      "round_almond_eye_shape",
+      "side_part_air_bangs",
+      "upturned_lip_corners",
+      "soft_jawline_curve",
+      "natural_straight_brows"
+    ]
+  },
+
+  "layers": {
+    "body": { "file": "layers/body/body.png", "status": "missing" },
+    "hair_front": { "file": "layers/hair/hair_front.png", "status": "missing" },
+    "hair_back": { "file": "layers/hair/hair_back.png", "status": "missing" },
+    "hair_side": { "file": "layers/hair/hair_side.png", "status": "missing" },
+    "face": { "file": "layers/face/face.png", "status": "missing" },
+    "eye_left": { "file": "layers/eyes/eye_left.png", "status": "missing" },
+    "eye_right": { "file": "layers/eyes/eye_right.png", "status": "missing" },
+    "eye_blink": { "file": "layers/eyes/blink.png", "status": "missing" },
+    "mouth_close": { "file": "layers/mouth/mouth_close.png", "status": "missing" },
+    "mouth_a": { "file": "layers/mouth/mouth_a.png", "status": "missing" },
+    "mouth_o": { "file": "layers/mouth/mouth_o.png", "status": "missing" },
+    "mouth_smile": { "file": "layers/mouth/mouth_smile.png", "status": "missing" },
+    "clothes_graduation": { "file": "layers/clothes/graduation/outfit.png", "status": "missing" },
+    "clothes_live": { "file": "layers/clothes/live/outfit.png", "status": "missing" },
+    "clothes_ceo": { "file": "layers/clothes/CEO/outfit.png", "status": "missing" },
+    "accessory_mic": { "file": "layers/accessory/mic.png", "status": "missing" },
+    "accessory_glasses": { "file": "layers/accessory/glasses.png", "status": "missing" },
+    "effect_star": { "file": "layers/effect/star.png", "status": "missing" }
+  },
+
+  "animations": {
+    "idle": { "frames": 8, "fps": 8, "loop": true, "description": "站立呼吸 + 眨眼 + 微笑" },
+    "sing": { "frames": 20, "fps": 10, "loop": true, "description": "拿麦克风 + 嘴张开 + 身体摇摆 + 头部移动" },
+    "dance": { "frames": 30, "fps": 12, "loop": true, "description": "左右摆动 + 挥手 + 旋转 + 星光" },
+    "happy": { "frames": 12, "fps": 10, "loop": true },
+    "bow": { "frames": 8, "fps": 6, "loop": false }
+  },
+
+  "live2d": {
+    "enabled": false,
+    "model_path": "live2d/LUNA.model3.json",
+    "parameters": {
+      "body": ["ParamBodyAngleX", "ParamBodyAngleY", "ParamBodyAngleZ"],
+      "head": ["ParamAngleX", "ParamAngleY", "ParamAngleZ"],
+      "eyes": { "left_open": "ParamEyeLOpen", "right_open": "ParamEyeROpen" },
+      "mouth": { "open_y": "ParamMouthOpenY", "form": "ParamMouthForm" },
+      "emotions": {
+        "smile": "Smile",
+        "angry": "Angry",
+        "sad": "Sad",
+        "happy": "Happy"
+      }
+    },
+    "animation_mapping": {
+      "idle": { "motion": "Motion_Idle", "expression": "Expression_Normal" },
+      "sing": { "motion": "Motion_Sing", "expression": "Expression_Singing" },
+      "dance": { "motion": "Motion_Dance", "expression": "Expression_Happy" },
+      "happy": { "motion": "Motion_Happy", "expression": "Expression_Happy" },
+      "bow": { "motion": "Motion_Bow", "expression": "Expression_Normal" }
+    },
+    "audio_driven": {
+      "volume": "ParamMouthOpenY",
+      "beat": "ParamBodyAngleX",
+      "energy": "ParamEyeLOpen",
+      "emotion_happy": "Happy",
+      "emotion_sad": "Sad"
+    }
+  },
+
+  "quality_checklist": {
+    "identity": {
+      "face_shape_consistent": false,
+      "hairstyle_consistent": false,
+      "eye_shape_consistent": false,
+      "smile_consistent": false,
+      "personality_match": false
+    },
+    "game_asset": {
+      "transparent_background": false,
+      "no_text": false,
+      "no_extra_characters": false,
+      "animation_smooth": false,
+      "size_uniform": false
+    },
+    "all_passed": false
+  }
+}
