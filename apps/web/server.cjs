@@ -41,12 +41,12 @@ const server = http.createServer((req, res) => {
           res.writeHead(404)
           res.end('Not Found')
         } else {
-          res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+          res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache, no-store, must-revalidate' })
           res.end(data2)
         }
       })
     } else {
-      res.writeHead(200, { 'Content-Type': contentType })
+      res.writeHead(200, { 'Content-Type': contentType, 'Cache-Control': 'no-cache, no-store, must-revalidate' })
       res.end(data)
     }
   })
