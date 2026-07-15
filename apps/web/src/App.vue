@@ -5,12 +5,14 @@ import { useCharacterStore } from '@/stores/character'
 import { useMusicStore } from '@/stores/music'
 import FirstMeet from '@/components/FirstMeet.vue'
 import SplashScreen from '@/components/SplashScreen.vue'
+import GuidedTour from '@/components/GuidedTour.vue'
 
 const charStore = useCharacterStore()
 const musicStore = useMusicStore()
 const dialogueText = ref('')
 const showFirstMeet = ref(false)
 const showSplash = ref(true)
+const showTour = ref(false)
 
 onMounted(() => {
   charStore.restore()
@@ -29,6 +31,17 @@ function handleFirstMeetComplete() {
   showFirstMeet.value = false
   localStorage.setItem('luna_has_launched', '1')
   localStorage.setItem('luna_first_visit', Date.now().toString())
+  // Show guided tour on first visit
+  if (!localStorage.getItem('luna_tour_done')) {
+    showTour.value = true
+  } else {
+    dialogueText.value = '欢迎回来 🌙'
+    setTimeout(() => (dialogueText.value = ''), 2500)
+  }
+}
+
+function handleTourDone() {
+  showTour.value = false
   dialogueText.value = '欢迎来到我们的音乐小世界 🌙'
   setTimeout(() => (dialogueText.value = ''), 3000)
 }
@@ -64,6 +77,9 @@ onMounted(() => {
 
     <!-- Chapter 0 初见剧情 -->
     <FirstMeet v-if="!showSplash && showFirstMeet" @complete="handleFirstMeetComplete" />
+
+    <!-- 新手引导 Tour -->
+    <GuidedTour v-if="!showSplash && !showFirstMeet && showTour" @done="handleTourDone" />
 
     <!-- LUNA 对话 -->
     <div v-if="dialogueText" class="dialogue-bubble">{{ dialogueText }}</div>
