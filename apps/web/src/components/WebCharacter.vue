@@ -68,119 +68,150 @@ function drawPixelCharacter(
   ctx: CanvasRenderingContext2D, size: number,
   anim: string, form: string, frame: number, totalFrames: number
 ) {
-  const G = Math.floor(size / 16) // grid cell size
+  const G = Math.floor(size / 16)
   const P = (x: number, y: number, c: string) => { ctx.fillStyle = c; ctx.fillRect(x * G, y * G, G, G) }
-  const adjustColor = (hex: string, amt: number): string => {
-    const num = parseInt(hex.replace('#',''), 16)
-    const r = Math.max(0, Math.min(255, (num >> 16) + amt))
-    const g = Math.max(0, Math.min(255, ((num >> 8) & 0xFF) + amt))
-    const b = Math.max(0, Math.min(255, (num & 0xFF) + amt))
-    return `#${((r<<16)|(g<<8)|b).toString(16).padStart(6,'0')}`
-  }
-
-  // Color scheme per form
-  const outfits: Record<string, string> = { graduation: '#4a6fa5', live: '#e04070', CEO: '#2a2a4e' }
-  const accent: Record<string, string> = { graduation: '#ffd700', live: '#ff69b4', CEO: '#c9a04e' }
-  const outfit = outfits[form] || '#4a6fa5'
-  const ac = accent[form] || '#ffd700'
-
-  // Subtle idle breathing
   const breathe = Math.sin(frame / totalFrames * Math.PI * 2) * 0.5
 
-  // Hair
-  for (let x = 2; x <= 12; x++) for (let y = 0; y <= 3; y++) if (x >= 3 && x <= 11) P(x, y, '#3a2a1a')
-  // Hair sides with highlight strands
-  for (let y = 2; y <= 5; y++) { P(2, y, '#3a2a1a'); P(12, y, '#3a2a1a') }
-  // Hair highlight strands
-  P(3, 1, '#5a4a3a'); P(4, 8, '#5a4a3a'); P(10, 1, '#5a4a3a'); P(11, 8, '#5a4a3a')
+  // === 通用特征（三个形态共用） ===
+  const hairColor = '#5c3d2e'      // 棕色头发
+  const hairLight = '#7a5a4a'      // 发丝高光
+  const skinColor = '#ffd5b8'      // 肤色
+  const eyeDark = '#3a2010'        // 虹膜
 
-  // Face
-  for (let x = 4; x <= 10; x++) for (let y = 3; y <= 7; y++) P(x, y, '#ffd5b8')
-  // Eyes with highlights
-  if (anim !== 'bow') {
-    // Iris
-    P(5, 5, '#3a2010'); P(9, 5, '#3a2010')
-    // Pupil
-    P(5, 5, '#111'); P(9, 5, '#111')
-    // Eye white
-    P(4, 5, '#fff'); P(8, 5, '#fff'); P(5, 4, '#fff'); P(9, 4, '#fff')
-    // Sparkle highlight
-    if (anim === 'happy') { P(5, 4, '#ffd700'); P(9, 4, '#ffd700') } // golden sparkle
+  // 头发（棕色中长发+齐刘海）
+  for (let x = 2; x <= 12; x++) for (let y = 0; y <= 3; y++) if (x >= 3 && x <= 11) P(x, y, hairColor)
+  for (let y = 2; y <= 5; y++) { P(2, y, hairColor); P(12, y, hairColor) }
+  P(3, 1, hairLight); P(10, 1, hairLight)
+
+  // 脸部
+  for (let x = 4; x <= 10; x++) for (let y = 3; y <= 7; y++) P(x, y, skinColor)
+
+  // 黑框眼镜（女主播和CEO共用）
+  if (form === 'live' || form === 'CEO') {
+    ctx.fillStyle = '#222'; ctx.fillRect(4 * G, 5 * G, G * 2, G); ctx.fillRect(8 * G, 5 * G, G * 2, G)
+    P(4, 5, '#fff'); P(5, 5, '#3a2010'); P(8, 5, '#fff'); P(9, 5, '#3a2010') // 眼睛在镜片后
   } else {
-    // Closed eyes for bow
-    for (let x = 5; x <= 6; x++) P(x, 5, '#222')
-    for (let x = 9; x <= 10; x++) P(x, 5, '#222')
+    // 眼睛
+    P(5, 5, eyeDark); P(9, 5, eyeDark); P(4, 5, '#fff'); P(8, 5, '#fff')
   }
 
-  // Blush
-  if (anim !== 'bow') {
-    ctx.fillStyle = 'rgba(255,150,150,0.3)'
-    ctx.fillRect(3 * G, 6 * G, G * 2, G)
-    ctx.fillRect(11 * G, 6 * G, G * 2, G)
+  // 腮红
+  ctx.fillStyle = 'rgba(255,150,150,0.25)'; ctx.fillRect(3 * G, 6 * G, G * 2, G); ctx.fillRect(11 * G, 6 * G, G * 2, G)
+
+  // 嘴
+  if (anim === 'happy') { P(6, 7, '#e04070'); P(8, 7, '#e04070') }
+  else if (anim === 'sing') { P(7, 7 + Math.round(breathe), '#cc6644') }
+  else { P(7, 7, '#cc8866') }
+
+  // === 按形态区分 ===
+  if (form === 'graduation') drawGraduation()
+  else if (form === 'live') drawLive()
+  else if (form === 'CEO') drawCEO()
+
+  // 阴影
+  ctx.fillStyle = 'rgba(0,0,0,0.1)'; ctx.fillRect(4 * G, 15 * G, 8 * G, G * 0.5)
+
+  // ===== 🎓 毕业生 =====
+  function drawGraduation() {
+    // 学士帽
+    for (let x = 3; x <= 11; x++) P(x, 0, '#1a1a1a')
+    P(9, -1, '#ffd700') // 金色帽穗
+
+    // 黑袍身体
+    for (let x = 4; x <= 10; x++) for (let y = 8; y <= 13; y++) P(x, y, '#2a2a2a')
+    // 白衬衫领口
+    P(5, 8, '#fff'); P(6, 8, '#fff'); P(8, 8, '#fff'); P(9, 8, '#fff')
+    // 紫色领结
+    P(6, 8, '#8b5cf6'); P(7, 8, '#8b5cf6'); P(8, 8, '#8b5cf6'); P(7, 9, '#7c3aed')
+
+    // 右手高举毕业证书
+    const armUpY = 6 + Math.round(Math.sin(frame / 4) * 1)
+    P(11, armUpY, skinColor); P(11, armUpY + 1, skinColor); P(12, armUpY - 3, skinColor)
+    // 毕业证书卷轴（红色绸带）
+    P(12, armUpY - 4, '#cc3333'); P(12, armUpY - 5, '#cc3333'); P(13, armUpY - 4, '#aa2222')
+
+    // 左手捧花束
+    P(3, 9, skinColor)
+    // 花束（向日葵+粉花+绿叶）
+    ctx.fillStyle = '#ffd700'; ctx.fillRect(1 * G, 7 * G, G * 1.5, G * 1.5)   // 向日葵
+    ctx.fillStyle = '#ff69b4'; ctx.fillRect(1 * G, 8 * G, G, G)               // 粉色花
+    ctx.fillStyle = '#4a8'; ctx.fillRect(2 * G, 8 * G, G, G)                  // 绿叶
+    ctx.fillStyle = '#f5deb3'; ctx.fillRect(1 * G, 9 * G, G * 3, G)           // 米色花束包装
+
+    // 腿 + 白袜 + 黑鞋
+    for (let x = 5; x <= 9; x++) P(x, 14, '#333')
+    for (let x = 5; x <= 9; x++) P(x, 15, '#fff')  // 白袜
   }
 
-  // Mouth
-  if (anim === 'happy') {
-    P(6, 7, '#e04070'); P(7, 7, '#e04070'); P(8, 7, '#e04070')
-  } else if (anim === 'sing') {
-    P(6, 7 + Math.round(breathe), '#222')
-    P(7, 7 + Math.round(breathe), '#222')
-    P(8, 7 + Math.round(breathe), '#222')
-  } else {
-    P(7, 7, '#cc8866')
+  // ===== 🎤 女主播 =====
+  function drawLive() {
+    // 白色衬衫（荷叶领）
+    for (let x = 4; x <= 10; x++) for (let y = 8; y <= 12; y++) P(x, y, '#f5f5f5')
+    // 荷叶领褶皱
+    P(5, 8, '#e8e8e8'); P(9, 8, '#e8e8e8')
+    // 粉色领口装饰
+    P(6, 8, '#ffb6c1'); P(7, 8, '#ffb6c1'); P(8, 8, '#ffb6c1')
+
+    // 粉色电竞椅
+    for (let x = 3; x <= 11; x++) for (let y = 11; y <= 13; y++) if (x < 4 || x > 10 || y > 12) P(x, y, '#ff8fa3')
+    P(3, 10, '#ff8fa3'); P(11, 10, '#ff8fa3')
+
+    // 桌上麦克风
+    ctx.fillStyle = '#333'; ctx.fillRect(10 * G, 7 * G, G, G * 3)
+    ctx.fillStyle = '#666'; ctx.fillRect(9 * G, 6 * G, G * 2, G * 2) // 防喷罩
+
+    // 粉色马克杯
+    P(4, 11, '#ffb6c1'); P(4, 12, '#ffb6c1')
+    // 杯身爱心
+    P(4, 11, '#ff4081')
+
+    // 笔记本电脑
+    ctx.fillStyle = '#444'; ctx.fillRect(8 * G, 11 * G, G * 3, G * 2)
+
+    // 霓虹灯 "LIVE"
+    ctx.fillStyle = '#ff4081'
+    ctx.fillRect(2 * G, 0 * G, G * 3, G * 0.5)
+    ctx.fillRect(2 * G, 0 * G, G * 0.5, G * 2)
+
+    // 右手打招呼
+    const waveY = 8 + Math.round(Math.sin(frame / 3) * 2)
+    P(12, waveY, skinColor); P(12, waveY - 1, skinColor)
   }
 
-  // Body with shading
-  for (let x = 4; x <= 10; x++) for (let y = 8; y <= 12; y++) P(x, y, outfit)
-  // Clothing shadow (darker bottom)
-  for (let x = 4; x <= 10; x++) for (let y = 11; y <= 12; y++) P(x, y, adjustColor(outfit, -20))
-  // Collar + button details
-  P(6, 8, ac); P(7, 8, ac); P(8, 8, ac)
-  // Button line
-  P(7, 9, ac); P(7, 10, ac)
+  // ===== 💼 CEO =====
+  function drawCEO() {
+    // 深灰西装
+    for (let x = 4; x <= 10; x++) for (let y = 8; y <= 13; y++) P(x, y, '#3a3a4a')
+    // 白衬衫（敞开领口）
+    P(5, 8, '#fff'); P(6, 8, '#fff'); P(8, 8, '#fff'); P(9, 8, '#fff')
+    // 西装翻领
+    P(5, 8, '#2a2a3a'); P(9, 8, '#2a2a3a')
 
-  // Arms with animation
-  if (anim === 'sing' || anim === 'dance') {
-    const armY = 8 + Math.round(Math.sin(frame / 3) * 1.5)
-    P(3, armY, '#ffd5b8'); P(3, armY + 1, '#ffd5b8')
-    P(11, armY, '#ffd5b8'); P(11, armY + 1, '#ffd5b8')
-    // Mic in right hand for sing
-    if (anim === 'sing') { P(2, armY, '#666'); P(2, armY - 1, '#888') }
-  } else if (anim === 'happy') {
-    P(2, 7, '#ffd5b8'); P(2, 6, '#ffd5b8') // raised arms
-    P(12, 7, '#ffd5b8'); P(12, 6, '#ffd5b8')
-  } else if (anim === 'bow') {
-    P(3, 9, '#ffd5b8'); P(11, 9, '#ffd5b8') // hands together
-  } else {
-    // Idle arms at sides
-    P(3, 9, '#ffd5b8'); P(3, 10, '#ffd5b8')
-    P(11, 9, '#ffd5b8'); P(11, 10, '#ffd5b8')
+    // 黑色皮椅
+    for (let x = 3; x <= 11; x++) for (let y = 12; y <= 14; y++) P(x, y, '#1a1a1a')
+
+    // 木质办公桌
+    ctx.fillStyle = '#5c3a1e'; ctx.fillRect(1 * G, 11 * G, G * 4, G * 2)
+
+    // 金色CEO名牌
+    ctx.fillStyle = '#c9a04e'; ctx.fillRect(4 * G, 10 * G, G * 2, G)
+
+    // 绿色台灯（亮着暖黄光）
+    ctx.fillStyle = '#2d5a27'; ctx.fillRect(10 * G, 7 * G, G, G * 3)
+    ctx.fillStyle = '#ffd700'; ctx.fillRect(10 * G, 6 * G, G, G) // 灯光
+
+    // 奖杯
+    ctx.fillStyle = '#ffd700'; ctx.fillRect(1 * G, 6 * G, G * 2, G * 2)
+
+    // 双手交叠桌面
+    for (let x = 5; x <= 9; x++) P(x, 10, skinColor)
+    P(5, 9, skinColor); P(9, 9, skinColor)
+
+    // 窗外白天城市
+    ctx.fillStyle = '#87ceeb'; ctx.fillRect(10 * G, 1 * G, G * 4, G * 1.5)  // 蓝天
+    ctx.fillStyle = '#aaa'; ctx.fillRect(10 * G, 2 * G, G * 2, G * 3)        // 高楼
+    ctx.fillStyle = '#ccc'; ctx.fillRect(12 * G, 1 * G, G, G * 4)
   }
-
-  // Legs
-  for (let x = 5; x <= 9; x++) for (let y = 13; y <= 15; y++) P(x, y, '#333')
-
-  // Form-specific accessories
-  if (form === 'graduation') {
-    // Graduation cap
-    for (let x = 3; x <= 11; x++) P(x, 0, '#222')
-    P(4, -1, '#222'); P(10, -1, '#222')
-    P(9, -1, ac); // tassel
-  } else if (form === 'live') {
-    // Headphones
-    P(2, 2, '#444'); P(3, 2, '#444'); P(11, 2, '#444'); P(12, 2, '#444')
-  } else if (form === 'CEO') {
-    // Glasses
-    P(5, 5, 'transparent'); P(9, 5, 'transparent')
-    ctx.fillStyle = '#888'; ctx.fillRect(4 * G, 5 * G, G * 2, G); ctx.fillRect(8 * G, 5 * G, G * 2, G)
-    // Tie
-    for (let x = 6; x <= 8; x++) P(x, 8, '#c03030')
-    P(7, 9, '#c03030'); P(7, 10, '#c03030')
-  }
-
-  // Shadow
-  ctx.fillStyle = 'rgba(0,0,0,0.15)'
-  ctx.fillRect(4 * G, 15 * G, 8 * G, G * 0.5)
 }
 
 watch(() => [props.form, props.animation], () => loadSprite())
