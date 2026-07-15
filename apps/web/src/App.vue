@@ -26,9 +26,31 @@ onMounted(() => {
 function handleFirstMeetComplete() {
   showFirstMeet.value = false
   localStorage.setItem('luna_has_launched', '1')
+  localStorage.setItem('luna_first_visit', Date.now().toString())
   dialogueText.value = '欢迎来到我们的音乐小世界 🌙'
   setTimeout(() => (dialogueText.value = ''), 3000)
 }
+
+// Welcome back: show personalized greeting for returning users
+onMounted(() => {
+  if (!localStorage.getItem('luna_has_launched')) return
+  const firstVisit = parseInt(localStorage.getItem('luna_first_visit') || '0')
+  if (!firstVisit) { localStorage.setItem('luna_first_visit', Date.now().toString()); return }
+
+  const daysSinceFirst = Math.floor((Date.now() - firstVisit) / 86400000)
+  const hour = new Date().getHours()
+
+  let greeting = ''
+  if (hour >= 22 || hour < 6) greeting = '这么晚了还来看我...谢谢你 🌙'
+  else if (hour < 10) greeting = '早上好呀～今天想听什么歌？☀️'
+  else if (daysSinceFirst > 0) greeting = `你回来啦～我们已经相伴 ${daysSinceFirst} 天了 ✨`
+  else greeting = '你来啦～今天想做什么？'
+
+  setTimeout(() => {
+    dialogueText.value = greeting
+    setTimeout(() => (dialogueText.value = ''), 3000)
+  }, 1500)
+})
 </script>
 
 <template>
