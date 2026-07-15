@@ -40,11 +40,13 @@ onMounted(() => {
   const daysSinceFirst = Math.floor((Date.now() - firstVisit) / 86400000)
   const hour = new Date().getHours()
 
+  const name = localStorage.getItem('luna_nickname') || ''
+  const prefix = name ? `${name}，` : ''
   let greeting = ''
-  if (hour >= 22 || hour < 6) greeting = '这么晚了还来看我...谢谢你 🌙'
-  else if (hour < 10) greeting = '早上好呀～今天想听什么歌？☀️'
-  else if (daysSinceFirst > 0) greeting = `你回来啦～我们已经相伴 ${daysSinceFirst} 天了 ✨`
-  else greeting = '你来啦～今天想做什么？'
+  if (hour >= 22 || hour < 6) greeting = `这么晚了还来看我...谢谢你 ${name ? name : ''} 🌙`.trim()
+  else if (hour < 10) greeting = `${prefix}早上好呀～今天想听什么歌？☀️`
+  else if (daysSinceFirst > 0) greeting = `${prefix}你回来啦～我们已经相伴 ${daysSinceFirst} 天了 ✨`
+  else greeting = `${prefix}你来啦～今天想做什么？`
 
   setTimeout(() => {
     dialogueText.value = greeting
