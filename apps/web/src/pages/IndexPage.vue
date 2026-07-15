@@ -5,9 +5,11 @@ import { useMusicStore } from '@/stores/music'
 import { getDialogueEngine } from '@luna/ai-engine'
 import { getStorySystem } from '@luna/story-engine'
 import { useSoundEffects, useAmbientSound } from '@/composables/useSoundEffects'
+import { useDailyStreak } from '@/composables/useDailyStreak'
 
 const sfx = useSoundEffects()
 const ambience = useAmbientSound()
+const streak = useDailyStreak()
 
 // Time & weather
 const timeDisplay = computed(() => {
@@ -88,7 +90,17 @@ onUnmounted(() => { if (idleTimer) clearTimeout(idleTimer); ambience.stop() })
     <span class="time-badge">{{ timeDisplay }}</span>
     <span class="weather-badge">{{ weatherIcon }}</span>
     <span class="days-badge" v-if="daysSinceFirst > 0">相伴 {{ daysSinceFirst }} 天</span>
+    <span class="streak-badge" v-if="streak.streak.value >= 2">
+      {{ streak.streakEmoji.value }} 连续 {{ streak.streak.value }} 天
+    </span>
   </div>
+
+  <!-- 签到里程碑奖励 -->
+  <Transition name="bubble">
+    <div v-if="streak.showReward.value" class="streak-reward" @click="streak.dismissReward()">
+      <p>{{ streak.rewardMessage.value }}</p>
+    </div>
+  </Transition>
 
   <div class="stage-container">
     <!-- 角色 -->
@@ -158,6 +170,17 @@ onUnmounted(() => { if (idleTimer) clearTimeout(idleTimer); ambience.stop() })
   font-size: 12px; color: #a0a0b8; backdrop-filter: blur(8px);
 }
 .days-badge { color: #e8b86d; border: 1px solid rgba(232,184,109,0.2); }
+.streak-badge { color: #ffb6c1; border: 1px solid rgba(255,182,193,0.2); }
+
+/* 签到里程碑 */
+.streak-reward {
+  position: absolute; top: 25%; left: 50%; transform: translateX(-50%); z-index: 35;
+  padding: 16px 28px; background: rgba(22,33,62,0.96);
+  border: 2px solid #ffd700; border-radius: 16px; cursor: pointer;
+  box-shadow: 0 0 32px rgba(255,215,0,0.2);
+  animation: lunaFadeIn 0.5s ease;
+}
+.streak-reward p { color: #ffd700; font-size: 15px; text-align: center; margin: 0; }
 
 .stage-container {
   position: relative; z-index: 10; flex: 1;
