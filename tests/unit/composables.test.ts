@@ -59,6 +59,7 @@ describe('Daily Streak Logic', () => {
   it('should increment on consecutive days', () => {
     const yesterday = new Date(Date.now() - 86400000).toDateString()
     store['luna_last_visit'] = yesterday
+    store['luna_streak'] = JSON.stringify({ streak: 1, longest: 1, total: 1 })
     const result = computeStreak()
     expect(result.streak).toBe(2)
   })
