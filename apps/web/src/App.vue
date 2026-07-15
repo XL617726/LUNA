@@ -99,11 +99,11 @@ onMounted(() => {
 
     <!-- 底部导航 -->
     <nav class="bottom-nav">
-      <router-link to="/" class="nav-item">🏠<span>首页</span></router-link>
-      <router-link to="/music" class="nav-item">🎼<span>歌曲</span></router-link>
-      <router-link to="/character" class="nav-item">👗<span>换装</span></router-link>
-      <router-link to="/memory" class="nav-item">💫<span>回忆</span></router-link>
-      <router-link to="/chat" class="nav-item">💬<span>聊天</span></router-link>
+      <a @click.prevent="$router.push('/')" class="nav-item" :class="{ active: $route.path === '/' }">🏠<span>首页</span></a>
+      <a @click.prevent="$router.push('/music')" class="nav-item" :class="{ active: $route.path === '/music' }">🎼<span>歌曲</span></a>
+      <a @click.prevent="$router.push('/character')" class="nav-item" :class="{ active: $route.path === '/character' }">👗<span>换装</span></a>
+      <a @click.prevent="$router.push('/memory')" class="nav-item" :class="{ active: $route.path === '/memory' }">💫<span>回忆</span></a>
+      <a @click.prevent="$router.push('/chat')" class="nav-item" :class="{ active: $route.path === '/chat' }">💬<span>聊天</span></a>
     </nav>
   </div>
 </template>
@@ -123,7 +123,8 @@ onMounted(() => {
   color: #a0a0b8; text-decoration: none; font-size: 12px; padding: 8px 16px;
   border-radius: 8px; transition: all 0.15s;
 }
-.nav-item:hover, .router-link-active { color: #e8b86d; background: rgba(232,184,109,0.08); }
+.nav-item:hover, .nav-item.active { color: #e8b86d; background: rgba(232,184,109,0.08); }
+.nav-item { cursor: pointer; }
 .nav-item span { font-size: 11px; }
 
 /* Mobile responsive */
