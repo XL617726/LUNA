@@ -16,8 +16,13 @@
 <body>
   <div id="app"></div>
   <script>
+    // Force unregister old service worker to clear stale cache
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        regs.forEach(r => r.unregister())
+      }).then(() => {
+        navigator.serviceWorker.register('/sw.js')
+      })
     }
   </script>
   <script type="module" src="/src/main.ts"></script>
