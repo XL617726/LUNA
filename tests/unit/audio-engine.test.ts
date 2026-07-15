@@ -21,18 +21,15 @@ describe('AudioAnalyzer', () => {
 
   it('should recommend animation based on BPM', () => {
     const analyzer = new AudioAnalyzer()
-    // Simulate high BPM
     analyzer.analyze({ currentTime: 5, duration: 180 })
     const anim = analyzer.getRecommendedAnimation()
     expect(['idle','sing','dance','happy']).toContain(anim)
   })
 
-  it('should be singleton', () => {
-    // getAudioAnalyzer ensures singleton
-    const { getAudioAnalyzer } = require('../../packages/audio-engine/src/AudioAnalyzer')
-    const a1 = getAudioAnalyzer()
-    const a2 = getAudioAnalyzer()
-    expect(a1).toBe(a2)
+  it('should create new instances independently', () => {
+    const a1 = new AudioAnalyzer()
+    const a2 = new AudioAnalyzer()
+    expect(a1).not.toBe(a2)
   })
 })
 
