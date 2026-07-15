@@ -134,7 +134,8 @@ export class CharacterEngine {
     }
   }
 
-  fromJSON(data: Record<string, unknown>): void {
+  fromJSON(data: Record<string, unknown> | null): void {
+    if (!data) return
     if (data.currentForm) this._currentForm = data.currentForm as CharacterForm
     if (data.currentState) this._currentState = data.currentState as CharacterState
     if (data.level) this._level = data.level as number
