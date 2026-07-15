@@ -4,11 +4,13 @@ import { seedDemoData, DEMO_SONGS } from '@/demo-data'
 import { useCharacterStore } from '@/stores/character'
 import { useMusicStore } from '@/stores/music'
 import FirstMeet from '@/components/FirstMeet.vue'
+import SplashScreen from '@/components/SplashScreen.vue'
 
 const charStore = useCharacterStore()
 const musicStore = useMusicStore()
 const dialogueText = ref('')
 const showFirstMeet = ref(false)
+const showSplash = ref(true)
 
 onMounted(() => {
   charStore.restore()
@@ -57,8 +59,11 @@ onMounted(() => {
 
 <template>
   <div class="app-shell">
+    <!-- Splash Screen -->
+    <SplashScreen v-if="showSplash" @done="showSplash = false" />
+
     <!-- Chapter 0 初见剧情 -->
-    <FirstMeet v-if="showFirstMeet" @complete="handleFirstMeetComplete" />
+    <FirstMeet v-if="!showSplash && showFirstMeet" @complete="handleFirstMeetComplete" />
 
     <!-- LUNA 对话 -->
     <div v-if="dialogueText" class="dialogue-bubble">{{ dialogueText }}</div>
