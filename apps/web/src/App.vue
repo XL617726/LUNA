@@ -4,11 +4,13 @@ import { seedDemoData, DEMO_SONGS } from '@/demo-data'
 import { useCharacterStore } from '@/stores/character'
 import { useMusicStore } from '@/stores/music'
 import FirstMeet from '@/components/FirstMeet.vue'
+import SplashScreen from '@/components/SplashScreen.vue'
 
 const charStore = useCharacterStore()
 const musicStore = useMusicStore()
 const dialogueText = ref('')
 const showFirstMeet = ref(false)
+const showSplash = ref(true)
 
 onMounted(() => {
   charStore.restore()
@@ -57,8 +59,11 @@ onMounted(() => {
 
 <template>
   <div class="app-shell">
+    <!-- Splash Screen -->
+    <SplashScreen v-if="showSplash" @done="showSplash = false" />
+
     <!-- Chapter 0 初见剧情 -->
-    <FirstMeet v-if="showFirstMeet" @complete="handleFirstMeetComplete" />
+    <FirstMeet v-if="!showSplash && showFirstMeet" @complete="handleFirstMeetComplete" />
 
     <!-- LUNA 对话 -->
     <div v-if="dialogueText" class="dialogue-bubble">{{ dialogueText }}</div>
@@ -93,6 +98,18 @@ onMounted(() => {
 }
 .nav-item:hover, .router-link-active { color: #e8b86d; background: rgba(232,184,109,0.08); }
 .nav-item span { font-size: 11px; }
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .bottom-nav { gap: 8px; padding: 10px 8px; }
+  .nav-item { padding: 6px 10px; font-size: 10px; }
+  .nav-item span { font-size: 9px; }
+}
+
+@media (min-width: 768px) {
+  .app-shell { max-width: 480px; margin: 0 auto; border-left: 1px solid rgba(255,255,255,0.04); border-right: 1px solid rgba(255,255,255,0.04); }
+}
+
 .dialogue-bubble {
   position: fixed; top: 40px; left: 50%; transform: translateX(-50%); z-index: 100;
   padding: 12px 24px; background: rgba(22,33,62,0.95); border: 1px solid rgba(232,184,109,0.3);

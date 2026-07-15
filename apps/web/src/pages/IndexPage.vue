@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useCharacterStore } from '@/stores/character'
 import { useMusicStore } from '@/stores/music'
 import { getDialogueEngine } from '@luna/ai-engine'
 import { getStorySystem } from '@luna/story-engine'
+import { useSoundEffects, useAmbientSound } from '@/composables/useSoundEffects'
+
+const sfx = useSoundEffects()
+const ambience = useAmbientSound()
 
 // Time & weather
 const timeDisplay = computed(() => {
@@ -25,6 +29,7 @@ const daysSinceFirst = computed(() => {
 import WebCharacter from '@/components/WebCharacter.vue'
 import WebSceneManager from '@/components/WebSceneManager.vue'
 import Starfield from '@/components/Starfield.vue'
+import RoomAmbience from '@/components/RoomAmbience.vue'
 
 const charStore = useCharacterStore()
 const musicStore = useMusicStore()
@@ -60,10 +65,22 @@ function handleStarClick() {
   const r = story.triggerStory('hidden_star')
   if (r) showDialogue(r.dialogue, 4000)
 }
+
+// Random idle dialogue — LUNA偶尔自言自语
+let idleTimer: number | null = null
+function scheduleIdleDialogue() {
+  idleTimer = window.setTimeout(() => {
+    if (!dialogueText.value) showDialogue(dialogue.speak('idle'), 2500)
+    scheduleIdleDialogue()
+  }, 15000 + Math.random() * 30000) // 15-45秒随机
+}
+onMounted(() => { scheduleIdleDialogue(); ambience.start() })
+onUnmounted(() => { if (idleTimer) clearTimeout(idleTimer); ambience.stop() })
 </script>
 
 <template>
   <Starfield />
+  <RoomAmbience />
   <WebSceneManager :form="charStore.currentForm" />
 
   <!-- 房间状态栏 -->
@@ -119,11 +136,11 @@ function handleStarClick() {
 
   <!-- 底部操作栏 -->
   <div class="action-bar">
-    <button class="action-btn mic-btn" @click="$router.push('/perform')">🎤 唱歌</button>
-    <button class="action-btn" @click="$router.push('/music')">🎼 歌曲</button>
-    <button class="action-btn" @click="$router.push('/character')">👗 换装</button>
-    <button class="action-btn" @click="$router.push('/memory')">💫 回忆</button>
-    <button class="action-btn chat-nav" @click="$router.push('/chat')">💬 聊天</button>
+    <button class="action-btn mic-btn" @click="sfx.click(); $router.push('/perform')">🎤 唱歌</button>
+    <button class="action-btn" @click="sfx.click(); $router.push('/music')">🎼 歌曲</button>
+    <button class="action-btn" @click="sfx.click(); $router.push('/character')">👗 换装</button>
+    <button class="action-btn" @click="sfx.click(); $router.push('/memory')">💫 回忆</button>
+    <button class="action-btn chat-nav" @click="sfx.click(); $router.push('/chat')">💬 聊天</button>
   </div>
 
   <!-- 隐藏星星 -->

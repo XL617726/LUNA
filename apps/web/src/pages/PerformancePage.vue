@@ -3,16 +3,19 @@
  * Performance Mode — LUNA 唱歌表演页面
  * 上传 → 分析 → 演唱 → 保存回忆
  */
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, reactive } from 'vue'
 import { useMusicStore } from '@/stores/music'
 import { useCharacterStore } from '@/stores/character'
 import { useAudioPlayer } from '@/composables/useAudioPlayer'
+import { useMelodyPlayer } from '@/composables/useMelodyPlayer'
 import { getMemorySystem, getDialogueEngine } from '@luna/ai-engine'
 import WebCharacter from '@/components/WebCharacter.vue'
 
 const music = useMusicStore()
 const charStore = useCharacterStore()
-const { playing, currentTime, duration, analysis, playFile, playTone, pause, resume, stop } = useAudioPlayer()
+const { playing, currentTime, analysis, playFile, pause, resume, stop } = useAudioPlayer()
+const { playMelody, getTotalDuration } = useMelodyPlayer()
+const duration = ref(0)
 const memory = getMemorySystem()
 const dialogue = getDialogueEngine()
 
@@ -48,13 +51,23 @@ async function handleUpload() {
 
     // 表演阶段
     stage.value = 'performing'
-    try { await playFile(url) } catch { playTone(music.playlist[idx]) }
+    charStore.setAnimationState('sing')
+    startFloatingNotes()
+    music.updateAnalysis({ bpm, energy: energy, isClimax: energy > 0.8 })
+    try {
+      await playFile(url)
+    } catch {
+      // 无真实音频 → 旋律合成器演奏
+      duration.value = getTotalDuration(name)
+      await playMelody(name)
+    }
   }
   input.click()
 }
 
 function handleFinish() {
   stop()
+  stopFloatingNotes()
   stage.value = 'finished'
   music.pause()
 
@@ -66,6 +79,31 @@ function handleFinish() {
     charStore.recordSong()
   }
 }
+
+// Floating music notes during performance
+const floatingNotes = reactive<Array<{ id: number; x: number; y: number; emoji: string; delay: number; duration: number }>>([])
+let noteTimer: number | null = null
+
+function startFloatingNotes() {
+  floatingNotes.length = 0
+  let id = 0
+  noteTimer = window.setInterval(() => {
+    floatingNotes.push({
+      id: id++, x: 10 + Math.random() * 80, y: 80,
+      emoji: ['🎵','🎶','✨','💫','🌟'][Math.floor(Math.random() * 5)],
+      delay: 0, duration: 2 + Math.random() * 2,
+    })
+    // Cleanup old notes
+    if (floatingNotes.length > 15) floatingNotes.splice(0, 5)
+  }, 600)
+}
+
+function stopFloatingNotes() {
+  if (noteTimer) { clearInterval(noteTimer); noteTimer = null }
+  floatingNotes.length = 0
+}
+
+onUnmounted(() => stopFloatingNotes())
 
 const computerAnalysisText = ref('')
 onMounted(() => {
@@ -86,6 +124,13 @@ onMounted(() => {
     <!-- 舞台灯光 -->
     <div class="stage-lights" :class="{ active: stage === 'performing' }">
       <div class="light l1" /><div class="light l2" /><div class="light l3" />
+    </div>
+
+    <!-- 浮空音符（表演时） -->
+    <div v-if="stage === 'performing'" class="floating-notes">
+      <span v-for="n in floatingNotes" :key="n.id" class="note" :style="{
+        left: n.x + '%', animationDuration: n.duration + 's',
+      }">{{ n.emoji }}</span>
     </div>
 
     <!-- 角色 -->
@@ -188,4 +233,13 @@ onMounted(() => {
 .back-btn:hover { background: rgba(232,184,109,0.25); }
 
 .stage-floor { position: absolute; bottom: 0; width: 100%; height: 20%; background: linear-gradient(0deg, rgba(0,0,0,0.4), transparent); pointer-events: none; }
+
+/* 浮空音符 */
+.floating-notes { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.note { position: absolute; bottom: 0; font-size: 24px; animation: floatUp linear forwards; opacity: 0; }
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(0.5); opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
+}
 </style>
