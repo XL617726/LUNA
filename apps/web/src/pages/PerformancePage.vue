@@ -7,12 +7,15 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useMusicStore } from '@/stores/music'
 import { useCharacterStore } from '@/stores/character'
 import { useAudioPlayer } from '@/composables/useAudioPlayer'
+import { useMelodyPlayer } from '@/composables/useMelodyPlayer'
 import { getMemorySystem, getDialogueEngine } from '@luna/ai-engine'
 import WebCharacter from '@/components/WebCharacter.vue'
 
 const music = useMusicStore()
 const charStore = useCharacterStore()
-const { playing, currentTime, duration, analysis, playFile, playTone, pause, resume, stop } = useAudioPlayer()
+const { playing, currentTime, analysis, playFile, pause, resume, stop } = useAudioPlayer()
+const { playMelody, getTotalDuration } = useMelodyPlayer()
+const duration = ref(0)
 const memory = getMemorySystem()
 const dialogue = getDialogueEngine()
 
@@ -48,7 +51,15 @@ async function handleUpload() {
 
     // 表演阶段
     stage.value = 'performing'
-    try { await playFile(url) } catch { playTone(music.playlist[idx]) }
+    charStore.setAnimationState('sing')
+    music.updateAnalysis({ bpm, energy: energy, isClimax: energy > 0.8 })
+    try {
+      await playFile(url)
+    } catch {
+      // 无真实音频 → 旋律合成器演奏
+      duration.value = getTotalDuration(name)
+      await playMelody(name)
+    }
   }
   input.click()
 }
