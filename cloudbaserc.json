@@ -1,0 +1,51 @@
+{
+  "version": "2.0",
+  "envId": "{{env.LUNA_ENV_ID}}",
+  "functionRoot": "./cloudfunctions",
+  "functions": [
+    {
+      "name": "uploadMusic",
+      "timeout": 60,
+      "runtime": "Nodejs18.15",
+      "memorySize": 256,
+      "handler": "index.main"
+    },
+    {
+      "name": "analyzeAudio",
+      "timeout": 30,
+      "runtime": "Nodejs18.15",
+      "memorySize": 512,
+      "handler": "index.main"
+    },
+    {
+      "name": "aiChat",
+      "timeout": 30,
+      "runtime": "Nodejs18.15",
+      "memorySize": 256,
+      "handler": "index.main"
+    },
+    {
+      "name": "saveMemory",
+      "timeout": 20,
+      "runtime": "Nodejs18.15",
+      "memorySize": 256,
+      "handler": "index.main"
+    },
+    {
+      "name": "userProfile",
+      "timeout": 20,
+      "runtime": "Nodejs18.15",
+      "memorySize": 256,
+      "handler": "index.main"
+    }
+  ],
+  "framework": {
+    "name": "luna",
+    "plugins": {
+      "client": {
+        "use": "@cloudbase/framework-plugin-website",
+        "inputs": { "buildCommand": "cd apps/web && npm run build", "outputPath": "apps/web/dist" }
+      }
+    }
+  }
+}

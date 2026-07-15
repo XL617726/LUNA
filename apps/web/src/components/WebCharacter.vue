@@ -70,6 +70,13 @@ function drawPixelCharacter(
 ) {
   const G = Math.floor(size / 16) // grid cell size
   const P = (x: number, y: number, c: string) => { ctx.fillStyle = c; ctx.fillRect(x * G, y * G, G, G) }
+  const adjustColor = (hex: string, amt: number): string => {
+    const num = parseInt(hex.replace('#',''), 16)
+    const r = Math.max(0, Math.min(255, (num >> 16) + amt))
+    const g = Math.max(0, Math.min(255, ((num >> 8) & 0xFF) + amt))
+    const b = Math.max(0, Math.min(255, (num & 0xFF) + amt))
+    return `#${((r<<16)|(g<<8)|b).toString(16).padStart(6,'0')}`
+  }
 
   // Color scheme per form
   const outfits: Record<string, string> = { graduation: '#4a6fa5', live: '#e04070', CEO: '#2a2a4e' }
@@ -82,16 +89,23 @@ function drawPixelCharacter(
 
   // Hair
   for (let x = 2; x <= 12; x++) for (let y = 0; y <= 3; y++) if (x >= 3 && x <= 11) P(x, y, '#3a2a1a')
-  // Hair sides
+  // Hair sides with highlight strands
   for (let y = 2; y <= 5; y++) { P(2, y, '#3a2a1a'); P(12, y, '#3a2a1a') }
+  // Hair highlight strands
+  P(3, 1, '#5a4a3a'); P(4, 8, '#5a4a3a'); P(10, 1, '#5a4a3a'); P(11, 8, '#5a4a3a')
 
   // Face
   for (let x = 4; x <= 10; x++) for (let y = 3; y <= 7; y++) P(x, y, '#ffd5b8')
-  // Eyes
+  // Eyes with highlights
   if (anim !== 'bow') {
-    P(5, 5, '#222'); P(9, 5, '#222')
-    // Eye sparkle
-    P(5, 4, '#fff'); P(9, 4, '#fff')
+    // Iris
+    P(5, 5, '#3a2010'); P(9, 5, '#3a2010')
+    // Pupil
+    P(5, 5, '#111'); P(9, 5, '#111')
+    // Eye white
+    P(4, 5, '#fff'); P(8, 5, '#fff'); P(5, 4, '#fff'); P(9, 4, '#fff')
+    // Sparkle highlight
+    if (anim === 'happy') { P(5, 4, '#ffd700'); P(9, 4, '#ffd700') } // golden sparkle
   } else {
     // Closed eyes for bow
     for (let x = 5; x <= 6; x++) P(x, 5, '#222')
@@ -109,10 +123,14 @@ function drawPixelCharacter(
     P(7, 7, '#cc8866')
   }
 
-  // Body
+  // Body with shading
   for (let x = 4; x <= 10; x++) for (let y = 8; y <= 12; y++) P(x, y, outfit)
-  // Collar
+  // Clothing shadow (darker bottom)
+  for (let x = 4; x <= 10; x++) for (let y = 11; y <= 12; y++) P(x, y, adjustColor(outfit, -20))
+  // Collar + button details
   P(6, 8, ac); P(7, 8, ac); P(8, 8, ac)
+  // Button line
+  P(7, 9, ac); P(7, 10, ac)
 
   // Arms with animation
   if (anim === 'sing' || anim === 'dance') {
