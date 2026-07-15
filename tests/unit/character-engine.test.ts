@@ -47,4 +47,26 @@ describe('CharacterEngine', () => {
     engine.setState('sing')
     expect(engine.currentState).toBe('sing')
   })
+
+  it('should return all three forms', () => {
+    const forms = engine.getAllForms()
+    expect(forms.length).toBe(3)
+    expect(forms.map(f => f.id)).toEqual(['graduation', 'live', 'CEO'])
+  })
+
+  it('should track form when switching', () => {
+    engine.switchForm('live')
+    engine.recordPlay()
+    engine.recordSong()
+    expect(engine.stats.totalPlays).toBe(1)
+    expect(engine.stats.totalSongs).toBe(1)
+  })
+
+  it('should handle rapid switching without error', () => {
+    for (let i = 0; i < 20; i++) {
+      const forms = ['graduation', 'live', 'CEO'] as const
+      engine.switchForm(forms[i % 3])
+    }
+    expect(engine.currentForm).toBe('CEO')
+  })
 })
