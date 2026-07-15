@@ -26,9 +26,33 @@ onMounted(() => {
 function handleFirstMeetComplete() {
   showFirstMeet.value = false
   localStorage.setItem('luna_has_launched', '1')
+  localStorage.setItem('luna_first_visit', Date.now().toString())
   dialogueText.value = '欢迎来到我们的音乐小世界 🌙'
   setTimeout(() => (dialogueText.value = ''), 3000)
 }
+
+// Welcome back: show personalized greeting for returning users
+onMounted(() => {
+  if (!localStorage.getItem('luna_has_launched')) return
+  const firstVisit = parseInt(localStorage.getItem('luna_first_visit') || '0')
+  if (!firstVisit) { localStorage.setItem('luna_first_visit', Date.now().toString()); return }
+
+  const daysSinceFirst = Math.floor((Date.now() - firstVisit) / 86400000)
+  const hour = new Date().getHours()
+
+  const name = localStorage.getItem('luna_nickname') || 'L shuo'
+  const prefix = name ? `${name}，` : ''
+  let greeting = ''
+  if (hour >= 22 || hour < 6) greeting = `这么晚了还来看我...谢谢你 ${name ? name : ''} 🌙`.trim()
+  else if (hour < 10) greeting = `${prefix}早上好呀～今天想听什么歌？☀️`
+  else if (daysSinceFirst > 0) greeting = `${prefix}你回来啦～我们已经相伴 ${daysSinceFirst} 天了 ✨`
+  else greeting = `${prefix}你来啦～今天想做什么？`
+
+  setTimeout(() => {
+    dialogueText.value = greeting
+    setTimeout(() => (dialogueText.value = ''), 3000)
+  }, 1500)
+})
 </script>
 
 <template>
@@ -48,6 +72,7 @@ function handleFirstMeetComplete() {
       <router-link to="/music" class="nav-item">🎼<span>歌曲</span></router-link>
       <router-link to="/character" class="nav-item">👗<span>换装</span></router-link>
       <router-link to="/memory" class="nav-item">💫<span>回忆</span></router-link>
+      <router-link to="/chat" class="nav-item">💬<span>聊天</span></router-link>
     </nav>
   </div>
 </template>

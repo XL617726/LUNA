@@ -1,9 +1,27 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useCharacterStore } from '@/stores/character'
 import { useMusicStore } from '@/stores/music'
 import { getDialogueEngine } from '@luna/ai-engine'
 import { getStorySystem } from '@luna/story-engine'
+
+// Time & weather
+const timeDisplay = computed(() => {
+  const now = new Date()
+  return `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`
+})
+const weatherIcon = computed(() => {
+  const h = new Date().getHours()
+  if (h >= 20 || h < 6) return '🌙'
+  if (h < 10) return '☀️'
+  if (h < 17) return '⛅'
+  return '🌅'
+})
+const daysSinceFirst = computed(() => {
+  const first = parseInt(localStorage.getItem('luna_first_visit') || '0')
+  if (!first) return 0
+  return Math.floor((Date.now() - first) / 86400000)
+})
 import WebCharacter from '@/components/WebCharacter.vue'
 import WebSceneManager from '@/components/WebSceneManager.vue'
 import Starfield from '@/components/Starfield.vue'
@@ -47,6 +65,13 @@ function handleStarClick() {
 <template>
   <Starfield />
   <WebSceneManager :form="charStore.currentForm" />
+
+  <!-- 房间状态栏 -->
+  <div class="room-status">
+    <span class="time-badge">{{ timeDisplay }}</span>
+    <span class="weather-badge">{{ weatherIcon }}</span>
+    <span class="days-badge" v-if="daysSinceFirst > 0">相伴 {{ daysSinceFirst }} 天</span>
+  </div>
 
   <div class="stage-container">
     <!-- 角色 -->
@@ -106,6 +131,17 @@ function handleStarClick() {
 </template>
 
 <style scoped>
+/* 房间状态栏 */
+.room-status {
+  position: absolute; top: 12px; left: 16px; z-index: 25;
+  display: flex; gap: 8px; align-items: center;
+}
+.time-badge, .weather-badge, .days-badge {
+  padding: 4px 12px; background: rgba(15,15,35,0.7); border-radius: 14px;
+  font-size: 12px; color: #a0a0b8; backdrop-filter: blur(8px);
+}
+.days-badge { color: #e8b86d; border: 1px solid rgba(232,184,109,0.2); }
+
 .stage-container {
   position: relative; z-index: 10; flex: 1;
   display: flex; flex-direction: column; align-items: center;
