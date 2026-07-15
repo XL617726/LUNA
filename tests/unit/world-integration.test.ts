@@ -20,7 +20,8 @@ describe('World Integration', () => {
 
     events.emit('time_change', { hour: 23, period: 'night' })
 
-    expect(weather.current.type).toBe('clear') // default unless random triggers
+    // Night can be clear or starfall (15% random chance)
+    expect(['clear', 'starfall']).toContain(weather.current.type)
     expect(typeof weather.current.intensity).toBe('number')
   })
 
