@@ -8,7 +8,9 @@ import SplashScreen from '@/components/SplashScreen.vue'
 import GuidedTour from '@/components/GuidedTour.vue'
 import ErrorBoundary from '@/components/ErrorBoundary.vue'
 import DemoMode from '@/components/DemoMode.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const charStore = useCharacterStore()
 const musicStore = useMusicStore()
 const dialogueText = ref('')
@@ -18,6 +20,12 @@ const showTour = ref(false)
 
 // Demo mode: add ?demo to URL
 const isDemo = new URLSearchParams(window.location.search).has('demo')
+
+// Navigation handler
+function goPage(path: string) {
+  console.log('[Nav] Navigating to:', path)
+  router.push(path).catch(e => console.error('[Nav] Error:', e))
+}
 
 onMounted(() => {
   charStore.restore()
@@ -97,11 +105,11 @@ onMounted(() => {
 
     <!-- 底部导航 -->
     <nav class="bottom-nav">
-      <button @click="$router.push('/')" class="nav-item" :class="{ active: $route.path === '/' }">🏠<span>首页</span></button>
-      <button @click="$router.push('/music')" class="nav-item" :class="{ active: $route.path === '/music' }">🎼<span>歌曲</span></button>
-      <button @click="$router.push('/character')" class="nav-item" :class="{ active: $route.path === '/character' }">👗<span>换装</span></button>
-      <button @click="$router.push('/memory')" class="nav-item" :class="{ active: $route.path === '/memory' }">💫<span>回忆</span></button>
-      <button @click="$router.push('/chat')" class="nav-item" :class="{ active: $route.path === '/chat' }">💬<span>聊天</span></button>
+      <button @click="goPage('/')" class="nav-item" :class="{ active: $route.path === '/' }">🏠<span>首页</span></button>
+      <button @click="goPage('/music')" class="nav-item" :class="{ active: $route.path === '/music' }">🎼<span>歌曲</span></button>
+      <button @click="goPage('/character')" class="nav-item" :class="{ active: $route.path === '/character' }">👗<span>换装</span></button>
+      <button @click="goPage('/memory')" class="nav-item" :class="{ active: $route.path === '/memory' }">💫<span>回忆</span></button>
+      <button @click="goPage('/chat')" class="nav-item" :class="{ active: $route.path === '/chat' }">💬<span>聊天</span></button>
     </nav>
   </div>
 </template>
