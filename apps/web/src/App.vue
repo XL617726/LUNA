@@ -40,7 +40,7 @@ onMounted(() => {
   const daysSinceFirst = Math.floor((Date.now() - firstVisit) / 86400000)
   const hour = new Date().getHours()
 
-  const name = localStorage.getItem('luna_nickname') || ''
+  const name = localStorage.getItem('luna_nickname') || 'L shuo'
   const prefix = name ? `${name}，` : ''
   let greeting = ''
   if (hour >= 22 || hour < 6) greeting = `这么晚了还来看我...谢谢你 ${name ? name : ''} 🌙`.trim()

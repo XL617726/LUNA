@@ -11,7 +11,7 @@ const musicStore = useMusicStore()
 const memory = getMemorySystem()
 const story = getStorySystem()
 
-const nickname = ref(localStorage.getItem('luna_nickname') || '朋友')
+const nickname = ref(localStorage.getItem('luna_nickname') || 'L shuo')
 const eggCount = ref(story.getUnlockedStories().length)
 const memoryCount = ref(memory.count)
 

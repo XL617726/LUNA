@@ -1,6 +1,9 @@
 /**
  * Demo data — 让 LUNA 首次启动就有内容可展示
  */
+// Set default nickname
+if (!localStorage.getItem('luna_nickname')) localStorage.setItem('luna_nickname', 'L shuo')
+
 import { getCharacterEngine } from '@luna/character-engine'
 import { getMemorySystem, getDialogueEngine } from '@luna/ai-engine'
 import { getStorySystem } from '@luna/story-engine'
