@@ -230,3 +230,35 @@
 2. **Asset Manifest** → `ASSET_MANIFEST.json`（36 项资产清单）
 3. **Prompt Kit** → `../../docs/ART_PRODUCTION_GUIDE.md`（8 个生成 Prompt）
 4. **Sprite Configs** → `{form}/{anim}.json`（18 个动画配置文件）
+
+---
+
+## 九、Claude Code 资产管理指令
+
+```
+你现在负责 LUNA Character Asset Pipeline。
+
+不要重新生成角色。
+
+必须读取 identity_sheet.md 和 character.json。
+
+所有动画必须保持：同一人物 · 同一发型 · 同一服装。
+
+禁止：随机改变脸型 · 随机改变颜色 · 随机增加装饰。
+
+角色资源结构：body / hair / face / eyes / mouth / clothes。
+
+所有动画引用同一角色 Layer。
+
+输入：真人照片 + identity_sheet.md
+输出：统一角色资源
+
+要求：
+1. 所有角色必须保持真人特征
+2. 禁止重新设计人物
+3. 所有 Sprite 必须：同脸型 · 同发型 · 同服装
+4. 角色必须拆层：body / hair / eyes / mouth / clothes
+5. 动画必须支持：idle / sing / dance
+6. 未来兼容 Live2D
+```
+
