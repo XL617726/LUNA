@@ -24,13 +24,16 @@ export function seedDemoData() {
   engine.recordPlay()
   engine.recordSong()
 
-  // Add demo memories
-  memory.add('milestone', { name: 'LUNA 诞生', description: '2026年夏天，LUNA 第一次睁开眼睛' })
+  // Add demo memories — makes LUNA feel like she's been waiting
+  memory.add('milestone', { name: 'LUNA 诞生', description: '2026年夏天，LUNA 第一次睁开眼睛，看到了这个世界' })
+  memory.add('milestone', { name: '第一束星光', description: 'LUNA 学会了唱第一首歌' })
   memory.add('first_upload', { songName: '夏天的风' })
   memory.add('interaction', { userSaid: '你好呀', lunaSaid: '你来啦～今天想听什么歌？' })
-  memory.add('milestone', { name: '第一次对话', description: '你第一次和 LUNA 说话' })
+  memory.add('milestone', { name: '第一次对话', description: '你第一次和 LUNA 说话，她说"我等你很久了"' })
   memory.add('interaction', { userSaid: '唱首歌吧', lunaSaid: '这首歌送给你 🎵' })
   memory.add('favorite_song', { songName: '夜空中最亮的星', playCount: 5 })
+  memory.add('interaction', { userSaid: '今天有点累', lunaSaid: '那今天休息一下吧，听一首安静的歌？🌙' })
+  memory.add('milestone', { name: '音乐小屋建成', description: 'LUNA 的房间装修完成，从此有了属于自己的小世界' })
 
   // Trigger first-meet story
   story.checkTriggers({ isFirstLaunch: true, isNightTime: false, isBirthday: false, consecutivePlays: 0, firstUpload: false })
@@ -41,18 +44,23 @@ export function seedDemoData() {
 /** Demo playlist */
 export const DEMO_SONGS: Song[] = [
   {
-    id: 'demo_1', name: '夏天的风', artist: 'Demo', duration: 245,
+    id: 'demo_1', name: '夏天的风', artist: '温岚', duration: 245,
     bpm: 90, animationMode: 'sing', coverUrl: '', fileUrl: '',
-    uploadedAt: new Date().toISOString(),
+    uploadedAt: new Date(Date.now() - 86400000 * 3).toISOString(),
   },
   {
-    id: 'demo_2', name: '夜空中最亮的星', artist: 'Demo', duration: 268,
+    id: 'demo_2', name: '夜空中最亮的星', artist: '逃跑计划', duration: 268,
     bpm: 108, animationMode: 'dance', coverUrl: '', fileUrl: '',
-    uploadedAt: new Date().toISOString(),
+    uploadedAt: new Date(Date.now() - 86400000 * 2).toISOString(),
   },
   {
-    id: 'demo_3', name: '起风了', artist: 'Demo', duration: 312,
+    id: 'demo_3', name: '起风了', artist: '买辣椒也用券', duration: 312,
     bpm: 75, animationMode: 'sing', coverUrl: '', fileUrl: '',
+    uploadedAt: new Date(Date.now() - 86400000).toISOString(),
+  },
+  {
+    id: 'demo_4', name: '晴天', artist: '周杰伦', duration: 269,
+    bpm: 128, animationMode: 'dance', coverUrl: '', fileUrl: '',
     uploadedAt: new Date().toISOString(),
   },
 ]
